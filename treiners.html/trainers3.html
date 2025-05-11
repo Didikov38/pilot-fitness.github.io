@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детальная информация | Фитнес-центр PILOT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Fustat', 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .detail-container {
+            background: white;
+            border-radius: 15px;
+            width: 900px;
+            max-width: 95%;
+            overflow: hidden;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .detail-content {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .detail-image {
+            flex: 1;
+            min-width: 300px;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+        
+        .detail-image img {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        
+        .detail-info {
+            flex: 1;
+            min-width: 300px;
+            padding: 40px;
+        }
+        
+        .detail-title {
+            color: #FF6200;
+            font-size: 28px;
+            margin-bottom: 10px; /* Уменьшен отступ */
+            font-weight: 800;
+        }
+        
+        .trainer-subtitle {
+            font-size: 18px;
+            color: #777;
+            margin-bottom: 20px;
+        }
+        
+        .detail-text {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .detail-bold {
+            font-weight: bold;
+            margin: 15px 0 5px 0;
+        }
+        
+        .specialization-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .specialization-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 8px;
+        }
+        
+        .specialization-list li:before {
+            content: "✔";
+            color: #FF6200;
+            position: absolute;
+            left: 0;
+        }
+        
+        .close-btn {
+            background: #FF6200;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            margin-top: 30px;
+        }
+        
+        .close-btn:hover {
+            background: #e05500;
+            transform: translateY(-2px);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        @media (max-width: 768px) {
+            .detail-image, .detail-info {
+                min-width: 100%;
+            }
+            
+            .detail-info {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="detail-container">
+        <div class="detail-content">
+            <div class="detail-image">
+                <img src="../images/trainers/3.jpg" alt="Тренажерный зал">
+            </div>
+            <div class="detail-info">
+                <h2 class="detail-title">Вячеслав Булавин</h2>
+                <div class="trainer-subtitle">Тренер</div>
+                
+                <p class="detail-bold">Стаж: 8 лет</p>
+                
+                <p class="detail-bold">Специализация:</p>
+                <ul class="specialization-list">
+                    <li>Функциональный тренинг и упражнения на выносливость</li>
+                    <li>Набор мышечной массы (силовой тренинг и бодибилдинг)</li>
+                    <li>Снижение веса</li>
+                    <li>Коррекция фигуры</li>
+                    <li>Составление индивидуальных программ питания</li>
+                    <li>Составление индивидуальной тренировочной программы</li>
+                </ul>
+                
+                <button class="close-btn" onclick="window.history.back()">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

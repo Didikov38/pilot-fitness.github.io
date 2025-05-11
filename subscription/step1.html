@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформление абонемента | Данные клиента</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        /* Основные стили страницы */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Fustat', sans-serif;
+            background: #f8f8f8;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            padding: 0 10%; /* Добавляем отступы по бокам */
+        }
+
+        /* Левая панель с формой */
+        .left-panel {
+            flex: 1;
+            padding: 40px 0; /* Уменьшаем боковые отступы */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 1000px; /* Увеличиваем максимальную ширину */
+        }
+
+        .form-header {
+            text-align: left; /* Выравниваем заголовки по левому краю */
+            margin-bottom: 40px;
+            padding-left: 20px; /* Добавляем отступ слева */
+        }
+
+        .form-title {
+            font-size: 42px;
+            font-weight: 800;
+            color: #1A1A1A;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .form-subtitle {
+            font-size: 24px;
+            color: #555;
+            margin: 0;
+        }
+
+        /* Сетка формы */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px; /* Увеличиваем промежуток между полями */
+            padding: 0 20px; /* Добавляем отступы по бокам */
+        }
+
+        /* Стили полей */
+        .form-field {
+            margin-bottom: 30px;
+        }
+
+        .form-field label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            padding-left: 5px; /* Небольшой отступ для label */
+        }
+
+        .form-field input, 
+        .form-field select {
+            width: 100%;
+            padding: 16px 20px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-field input:focus, 
+        .form-field select:focus {
+            outline: none;
+            background: #e0e0e0;
+        }
+
+        /* Выбор пола */
+        .gender-selection {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .gender-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .gender-option input {
+            width: auto;
+        }
+
+        /* Кнопка */
+        .next-btn-container {
+            padding-left: 20px; /* Выравниваем с заголовками */
+            margin-top: 20px;
+        }
+
+        .next-btn {
+            background: #FF6200;
+            color: white;
+            padding: 16px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .next-btn:hover {
+            background: #E55700;
+            transform: translateY(-2px);
+        }
+
+        /* Подвал */
+        footer {
+            background: #FF6200;
+            color: white;
+            padding: 40px 0;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Основное содержимое -->
+    <div class="main-content">
+        <div class="left-panel">
+            <div class="form-header">
+                <h1 class="form-title">Купить абонемент</h1>
+                <h2 class="form-subtitle">Данные клиента</h2>
+            </div>
+            
+            <form id="client-data-form">
+                <div class="form-grid">
+                    <!-- Первая строка -->
+                    <div class="form-field">
+                        <label for="first-name">Введите имя</label>
+                        <input type="text" id="first-name" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="last-name">Введите фамилию</label>
+                        <input type="text" id="last-name" required>
+                    </div>
+                    
+                    <!-- Вторая строка -->
+                    <div class="form-field">
+                        <label for="phone">Введите номер телефона</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="birthdate">Дата рождения</label>
+                        <input type="date" id="birthdate" required>
+                    </div>
+                    
+                    <!-- Третья строка -->
+                    <div class="form-field">
+                        <label for="email">Введите email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Пол</label>
+                        <div class="gender-selection">
+                            <label class="gender-option">
+                                <input type="radio" name="gender" value="male" checked> Муж
+                            </label>
+                            <label class="gender-option">
+                                <input type="radio" name="gender" value="female"> Жен
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="next-btn-container">
+                    <button type="submit" class="next-btn">Следующая страница →</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Подвал -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-left">
+                <div class="footer-contacts">
+                    <h3>Наш адрес:</h3>
+                    <p>г. Иркутск, Смоленщина,<br>ул. Трудовая, 56</p>
+                    <p>тел. +7 (395) 216-01,<br>+7 (895) 639 40-79</p>
+                    <p>Whatsapp: +7 (895) 816-52-41</p>
+                </div>
+                
+                <div class="footer-logo-block">
+                    <img src="../images/logo.png" alt="Логотип PILOT" class="footer-logo">
+                    <div class="footer-copyright">
+                        © 2026 ООО «ИЛОН» | Ilon, LLC<br>
+                        Политика обработки персональных данных<br>
+                        Публичная оферта
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-right">
+                <div class="qr-code-block">
+                    <img src="../images/qr.gif" alt="QR-код компании" class="qr-code">
+                    <div class="footer-documents">
+                        Правила и техника безопасности<br>
+                        Пользовательское соглашение<br>
+                        Сделано в ДзенДжэйне
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('client-data-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Сохраняем данные
+            const formData = {
+                firstName: document.getElementById('first-name').value,
+                lastName: document.getElementById('last-name').value,
+                phone: document.getElementById('phone').value,
+                birthdate: document.getElementById('birthdate').value,
+                email: document.getElementById('email').value,
+                gender: document.querySelector('input[name="gender"]:checked').value
+            };
+            localStorage.setItem('clientData', JSON.stringify(formData));
+            
+            // Переход на следующую страницу
+            window.location.href = 'step2.html';
+        });
+    </script>
+</body>
+</html>

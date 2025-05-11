@@ -1,0 +1,536 @@
+/* 
+===========================================
+ГЛАВНЫЙ СТИЛЕВОЙ ФАЙЛ ФИТНЕС-ЦЕНТРА
+===========================================
+*/
+
+/* ========= 1. ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ========= */
+:root {
+  /* Цветовая палитра */
+  --primary: #FF6200;       /* Основной оранжевый цвет */
+  --secondary: #07A9AE;     /* Бирюзовый акцентный цвет */
+  --dark: #1A1A1A;          /* Цвет основного текста */
+  --light: #FFFFFF;         /* Белый фон */
+  --gray: #D9D9D9;          /* Серый для второстепенных элементов */
+  
+  /* Тени */
+  --shadow: 0 4px 15px rgba(0,0,0,0.1);
+  
+  /* Отступы */
+  --section-padding: 50px 0;
+}
+
+/* ========= 2. БАЗОВЫЕ СТИЛИ ========= */
+* {
+  margin: 0;                /* Обнуление внешних отступов */
+  padding: 0;               /* Обнуление внутренних отступов */
+  box-sizing: border-box;   /* Правильная модель размеров */
+}
+
+body {
+  font-family: 'Fustat', 'Arial', sans-serif; /* Основной шрифт */
+  background: var(--light); /* Цвет фона страницы */
+  color: var(--dark);       /* Цвет текста по умолчанию */
+  line-height: 1.6;         /* Межстрочный интервал */
+}
+
+/* Основной контейнер для центрирования контента */
+.container {
+  max-width: 1280px;        /* Максимальная ширина контента */
+  margin: 0 auto;           /* Центрирование по горизонтали */
+  padding: 0 20px;          /* Отступы по бокам на мобильных */
+}
+
+/* Стили для изображений */
+img {
+  max-width: 100%;          /* Ограничение по ширине */
+  height: auto;             /* Сохранение пропорций */
+  display: block;           /* Устранение лишних отступов */
+}
+
+/* Стили для ссылок */
+a {
+  text-decoration: none;    /* Убираем подчеркивание */
+  color: inherit;           /* Наследуем цвет текста */
+}
+
+/* ========== HEADER (ШАПКА) ========== */
+.header {
+  background: #FF6200;
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo img {
+  width: 80px;
+  height: auto;
+}
+
+.main-nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-list {
+  display: flex;
+  list-style: none;
+  gap: 25px;
+  margin: 0 20px;
+}
+
+.nav-item a {
+  color: white;
+  font-weight: 800;
+  font-size: 18px;
+  transition: opacity 0.3s;
+  padding: 5px 0;
+  position: relative;
+  text-decoration: none;
+}
+
+.nav-item a:hover {
+  opacity: 0.8;
+}
+
+.nav-item a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: white;
+  transition: width 0.3s;
+}
+
+.nav-item a:hover::after {
+  width: 100%;
+}
+
+.nav-item a.active {
+  border-bottom: 2px solid white;
+}
+
+.header-actions {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.auth-btn {
+  background: rgba(255,255,255,0.2);
+  padding: 8px 15px;
+  border-radius: 4px;
+  color: white;
+  transition: background 0.3s;
+}
+
+.auth-btn:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+.buy-btn {
+  background: white;
+  color: #FF6200;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.buy-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* ========== SLIDER (СЛАЙДЕР) ========== */
+.slider {
+    height: 500px;
+    position: relative;
+    overflow: hidden;
+    margin: 20px auto; /* Отступ сверху и снизу */
+    max-width: calc(100% - 40px); /* Отступы по бокам */
+    border-radius: 8px; /* Закругленные углы */
+}
+
+/* Стрелки слайдера */
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.slider-arrow:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.slider-arrow_prev {
+    left: 20px;
+}
+
+.slider-arrow_next {
+    right: 20px;
+}
+
+/* Слайд */
+.slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+/* Стили для точек слайдера */
+.slider-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 5;
+}
+
+.slider-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.slider-dot.active {
+    background: var(--primary); /* Оранжевый цвет как в дизайне */
+}
+/* ========== INFO CARDS (ИНФО-КАРТОЧКИ) ========== */
+.info-section {
+    padding: 50px 0;
+}
+
+.info-cards {
+    display: flex;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.info-card {
+    flex: 1;
+    position: relative;
+}
+
+/* Общие стили для заголовков карточек */
+.info-card-header {
+    padding: 15px 20px;
+    border-radius: 10px 10px 0 0;
+    position: relative;
+    z-index: 2;
+    margin-bottom: -15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center; /* Выравнивание текста по центру */
+}
+
+/* Стили для заголовков */
+.card-header-orange {
+    background: #FF6200; /* Оранжевый */
+    color: white;
+}
+
+.card-header-gray {
+    background: #565454; /* Серый */
+    color: white;
+}
+
+.card-header-teal {
+    background: #07A9AE; /* Бирюзовый */
+    color: white;
+}
+
+.info-card-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+/* Тело карточки */
+.info-card-body {
+    background: #f5f5f5;
+    padding: 30px 20px 20px;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    min-height: 150px;
+    position: relative;
+    z-index: 1;
+    color: #333;
+text-align: center
+}
+
+.info-card-body p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Адаптивность */
+@media (max-width: 992px) {
+    .info-cards {
+        flex-direction: column;
+        gap: 50px;
+    }
+    
+    .info-card {
+        margin-bottom: 30px;
+    }
+    
+    .info-card-header {
+        margin-bottom: -10px;
+    }
+}
+
+/* ========== GALLERY (ГАЛЕРЕЯ) ========== */
+.gallery-section {
+    padding: 50px 0;
+}
+
+.gallery-container {
+    display: flex;
+    gap: 30px;
+}
+
+/* Левая колонка с SVG иконками */
+.gallery-left {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    align-content: start;
+}
+
+.gallery-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.svg-icon {
+    width: 120px; /* Оптимальный размер для SVG */
+    height: 120px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));
+    transition: transform 0.3s;
+}
+
+.svg-icon:hover {
+    transform: scale(1.05);
+}
+
+.gallery-caption {
+    margin-top: 10px;
+    text-align: center;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Правая колонка с основным фото */
+.gallery-right {
+    flex: 1.5; /* Занимает больше места */
+    display: flex;
+    align-items: flex-start;
+}
+
+.main-photo {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Адаптивность */
+@media (max-width: 992px) {
+    .gallery-container {
+        flex-direction: column;
+    }
+    
+    .gallery-left {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .gallery-right {
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery-left {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .svg-icon {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+/* ========== FOOTER (ПОДВАЛ) ========== */
+.footer {
+    background: #FF6200;
+    color: white;
+    padding: 50px 0 30px;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+/* Левая часть подвала */
+.footer-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+}
+
+.footer-contacts h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: 800;
+}
+
+.footer-contacts p {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.footer-logo-block {
+    margin-top: 30px;
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+}
+
+.footer-logo {
+    width: 80px;
+    height: auto;
+}
+
+.footer-copyright {
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Правая часть подвала */
+.footer-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.qr-code-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.qr-code {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 15px;
+    background: white;
+    padding: 5px;
+}
+
+.footer-documents {
+    text-align: right;
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .footer-logo-block {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .qr-code-block {
+        align-items: flex-start;
+        margin-top: 20px;
+    }
+    
+    .footer-documents {
+        text-align: left;
+    }
+}
+
+/* ========= 8. АДАПТИВНОСТЬ ========= */
+@media (max-width: 992px) {
+  /* Планшетная версия */
+  .info-cards {
+    flex-direction: column; /* Вертикальное расположение карточек */
+  }
+  
+  .gallery-container {
+    flex-direction: column; /* Вертикальное расположение галереи */
+  }
+  
+  .gallery {
+    grid-template-columns: 1fr; /* 1 колонка вместо 2 */
+  }
+}
+
+@media (max-width: 768px) {
+  /* Мобильная версия */
+  .header-container {
+    flex-direction: column; /* Вертикальное расположение */
+    gap: 15px;              /* Расстояние между элементами */
+  }
+  
+  .nav-list {
+    flex-wrap: wrap;        /* Перенос на новую строку */
+    justify-content: center; /* Центрирование */
+  }
+  
+  .slider {
+    height: 300px;          /* Уменьшение высоты слайдера */
+  }
+}

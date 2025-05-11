@@ -1,0 +1,269 @@
+/* ====================== */
+/* ОСНОВНАЯ СТРУКТУРА     */
+/* ====================== */
+
+/* Общий контейнер для всех страниц оформления */
+.subscription-flow {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Занимает всю высоту экрана */
+    background-color: #f8f8f8; /* Светло-серый фон */
+    margin: 0;
+    font-family: 'Fustat', 'Arial', sans-serif;
+}
+
+/* Основное содержимое страницы */
+.main-content {
+    flex: 1; /* Занимает все доступное пространство */
+    padding: 40px 5%; /* Отступы сверху/снизу 40px, по бокам 5% */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Контейнер для формы (ограничивает ширину) */
+.form-container {
+    width: 100%;
+    max-width: 1200px; /* Максимальная ширина контента */
+    margin: 0 auto; /* Центрирование по горизонтали */
+}
+
+/* ====================== */
+/* ЗАГОЛОВКИ СТРАНИЦ      */
+/* ====================== */
+
+/* Блок с заголовком и подзаголовком */
+.form-header {
+    text-align: left; /* Выравнивание по левому краю */
+    margin-bottom: 40px; /* Отступ снизу */
+    padding-left: 20px; /* Отступ слева */
+}
+
+/* Главный заголовок */
+.form-title {
+    font-size: 42px;
+    font-weight: 800; /* Жирный шрифт */
+    color: #1A1A1A; /* Темно-серый цвет */
+    margin-bottom: 10px; /* Отступ снизу */
+    text-transform: uppercase; /* Все буквы заглавные */
+}
+
+/* Подзаголовок */
+.form-subtitle {
+    font-size: 24px;
+    color: #555; /* Серый цвет */
+    margin: 0; /* Убираем стандартные отступы */
+}
+
+/* ====================== */
+/* КАРТОЧКИ АБОНЕМЕНТОВ   */
+/* ====================== */
+
+/* Контейнер для центрирования карточек */
+.plan-cards-container {
+    display: flex;
+    justify-content: center; /* Центрирование по горизонтали */
+    width: 100%;
+}
+
+/* Горизонтальный контейнер для карточек */
+.plan-cards {
+    display: flex;
+    gap: 30px; /* Расстояние между карточками */
+    padding: 20px 0; /* Отступы сверху/снизу */
+    overflow-x: auto; /* Горизонтальная прокрутка при необходимости */
+}
+
+/* Стили для карточки абонемента */
+.plan-card {
+    width: 320px; /* Фиксированная ширина карточки */
+    background-color: white;
+    border-radius: 12px; /* Закругленные углы */
+    padding: 30px; /* Внутренние отступы */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Тень */
+    flex-shrink: 0; /* Предотвращает сжатие карточек */
+}
+
+/* Цветовая схема для карточки Light */
+.plan-card.light {
+    border-top: 5px solid #07A9AE; /* Бирюзовая полоса сверху */
+}
+
+.plan-card.light .plan-name,
+.plan-card.light .select-btn {
+    color: #07A9AE; /* Бирюзовый цвет текста */
+}
+
+/* Цветовая схема для карточки Infinity */
+.plan-card.infinity {
+    border-top: 5px solid #800080; /* Фиолетовая полоса сверху */
+}
+
+.plan-card.infinity .plan-name,
+.plan-card.infinity .select-btn {
+    color: #800080; /* Фиолетовый цвет текста */
+}
+/* Цветовая схема для карточки Smart */
+.plan-card:not(.light):not(.infinity) {
+    border-top: 5px solid #FF6200; /* Оранжевая полоса сверху */
+}
+
+.plan-card:not(.light):not(.infinity) .plan-name,
+.plan-card:not(.light):not(.infinity) .select-btn {
+    color: #FF6200; /* Оранжевый цвет текста */
+    border-color: #FF6200; /* Оранжевая граница кнопки */
+}
+
+/* Название тарифа в карточке */
+.plan-name {
+    font-size: 24px;
+    font-weight: 800; /* Жирный шрифт */
+    margin-top: 0; /* Убираем отступ сверху */
+}
+
+/* Список особенностей тарифа */
+.plan-features {
+    padding-left: 20px; /* Отступ для списка */
+    margin: 20px 0; /* Отступы сверху/снизу */
+    list-style-type: none; /* Убираем стандартные маркеры */
+}
+
+/* Элементы списка особенностей */
+.plan-features li {
+    margin-bottom: 10px; /* Отступ между пунктами */
+    position: relative; /* Для позиционирования кастомных маркеров */
+}
+
+/* Кастомные маркеры для списка */
+.plan-features li:before {
+    content: "•"; /* Символ маркера */
+    color: inherit; /* Наследует цвет родителя */
+    position: absolute; /* Абсолютное позиционирование */
+    left: -15px; /* Сдвигаем влево */
+}
+
+/* Блок с ценой */
+.plan-price {
+    font-size: 28px;
+    font-weight: 800; /* Жирный шрифт */
+    text-align: center; /* Выравнивание по центру */
+    margin: 25px 0; /* Отступы сверху/снизу */
+    color: #1A1A1A; /* Темно-серый цвет */
+}
+
+/* ====================== */
+/* КНОПКИ                 */
+/* ====================== */
+
+/* Общие стили для кнопок выбора */
+.select-btn {
+    background-color: white;
+    padding: 16px; /* Внутренние отступы */
+    border: 2px solid; /* Граница (цвет наследуется) */
+    border-radius: 12px; /* Закругленные углы */
+    font-size: 18px;
+    font-weight: 800; /* Жирный шрифт */
+    cursor: pointer; /* Курсор-указатель */
+    width: 100%; /* На всю ширину карточки */
+    transition: all 0.3s; /* Плавные анимации */
+}
+
+/* Эффект при наведении на кнопку */
+.select-btn:hover {
+    transform: translateY(-3px); /* Сдвиг вверх */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Тень */
+}
+
+/* ====================== */
+/* СТРАНИЦА ОПЛАТЫ        */
+/* ====================== */
+
+/* Контейнер для центрирования блока оплаты */
+.payment-container {
+    display: flex;
+    justify-content: center; /* Центрирование по горизонтали */
+    width: 100%;
+}
+
+/* Основной блок с содержимым страницы оплаты */
+.payment-content {
+    width: 500px; /* Фиксированная ширина */
+    max-width: 100%; /* Не шире родительского контейнера */
+}
+
+/* Карточка с информацией о выбранном тарифе */
+.payment-card {
+    background-color: white;
+    border-radius: 12px; /* Закругленные углы */
+    padding: 30px; /* Внутренние отступы */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Тень */
+    margin-bottom: 30px; /* Отступ снизу */
+    text-align: center; /* Выравнивание по центру */
+}
+
+/* Заголовок блока оплаты */
+.payment-title {
+    font-size: 24px;
+    margin-bottom: 20px; /* Отступ снизу */
+}
+
+/* Название выбранного тарифа */
+.selected-plan {
+    font-size: 28px;
+    margin: 10px 0; /* Отступы сверху/снизу */
+}
+
+/* Цена выбранного тарифа */
+.selected-price {
+    font-size: 32px;
+    font-weight: 800; /* Жирный шрифт */
+    margin: 20px 0; /* Отступы сверху/снизу */
+}
+
+/* Форма оплаты */
+.payment-form {
+    background-color: white;
+    border-radius: 12px; /* Закругленные углы */
+    padding: 30px; /* Внутренние отступы */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Тень */
+}
+
+/* Группа полей формы */
+.form-group {
+    margin-bottom: 20px; /* Отступ снизу */
+}
+
+/* Подпись для поля ввода */
+.form-group label {
+    display: block; /* Блочный элемент */
+    margin-bottom: 8px; /* Отступ снизу */
+    font-weight: 600; /* Полужирный шрифт */
+}
+
+/* Поле ввода */
+.form-control {
+    width: 100%; /* На всю ширину */
+    padding: 15px; /* Внутренние отступы */
+    border: 1px solid #ddd; /* Серая граница */
+    border-radius: 8px; /* Закругленные углы */
+    font-size: 16px;
+}
+
+/* Кнопка завершения оплаты */
+.complete-btn {
+    background-color: #FF6200; /* Оранжевый фон */
+    color: white; /* Белый текст */
+    padding: 16px; /* Внутренние отступы */
+    border: none; /* Без границы */
+    border-radius: 12px; /* Закругленные углы */
+    font-size: 18px;
+    font-weight: 800; /* Жирный шрифт */
+    cursor: pointer; /* Курсор-указатель */
+    width: 100%; /* На всю ширину */
+    margin-top: 20px; /* Отступ сверху */
+    transition: all 0.3s; /* Плавные анимации */
+}
+
+/* Эффект при наведении на кнопку */
+.complete-btn:hover {
+    background-color: #E55700; /* Темно-оранжевый фон */
+}
