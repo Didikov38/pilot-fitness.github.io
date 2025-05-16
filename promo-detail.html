@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Акция | Фитнес-центр PILOT</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.cdnfonts.com/css/fustat" rel="stylesheet">
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header class="header">
+        <!-- Вставьте код шапки из других файлов -->
+    </header>
+
+    <section class="promo-detail">
+        <div class="container">
+            <div id="promo-content">
+                <!-- Контент будет загружен из Firebase -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Подвал сайта -->
+    <footer class="footer">
+        <!-- Вставьте код подвала из других файлов -->
+    </footer>
+
+    <!-- Подключение Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    
+    <script>
+        // Инициализация Firebase (должна быть такой же, как в других файлах)
+        const firebaseConfig = {
+            apiKey: "ваш_apiKey",
+            authDomain: "ваш_authDomain",
+            projectId: "ваш_projectId",
+            storageBucket: "ваш_storageBucket",
+            messagingSenderId: "ваш_messagingSenderId",
+            appId: "ваш_appId"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Загрузка данных акции
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const promoId = urlParams.get('id');
+            
+            if (promoId) {
+                db.collection('promotions').doc(promoId).get()
+                    .then(doc => {
+                        if (doc.exists) {
+                            const promo = doc.data();
+                            const promoContent = document.getElementById('promo-content');
+                            
+                            promoContent.innerHTML = `
+                                <h1>${promo.title}</h1>
+                                ${promo.imageUrl ? `<img src="${promo.imageUrl}" alt="${promo.title}" style="max-width: 100%; margin-bottom: 20px;">` : ''}
+                                <p>${promo.description}</p>
+                                <a href="promo.html" class="btn">Вернуться к акциям</a>
+                            `;
+                        } else {
+                            document.getElementById('promo-content').innerHTML = '<p>Акция не найдена</p>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Ошибка загрузки акции:', error);
+                        document.getElementById('promo-content').innerHTML = '<p>Ошибка загрузки акции</p>';
+                    });
+            }
+        });
+    </script>
+</body>
+</html>

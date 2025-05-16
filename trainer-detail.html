@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тренер | Фитнес-центр PILOT</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.cdnfonts.com/css/fustat" rel="stylesheet">
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header class="header">
+        <!-- Вставьте код шапки из других файлов -->
+    </header>
+
+    <section class="trainer-detail">
+        <div class="container">
+            <div id="trainer-content">
+                <!-- Контент будет загружен из Firebase -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Подвал сайта -->
+    <footer class="footer">
+        <!-- Вставьте код подвала из других файлов -->
+    </footer>
+
+    <!-- Подключение Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    
+    <script>
+        // Инициализация Firebase (должна быть такой же, как в других файлах)
+        const firebaseConfig = {
+            apiKey: "ваш_apiKey",
+            authDomain: "ваш_authDomain",
+            projectId: "ваш_projectId",
+            storageBucket: "ваш_storageBucket",
+            messagingSenderId: "ваш_messagingSenderId",
+            appId: "ваш_appId"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Загрузка данных тренера
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const trainerId = urlParams.get('id');
+            
+            if (trainerId) {
+                db.collection('trainers').doc(trainerId).get()
+                    .then(doc => {
+                        if (doc.exists) {
+                            const trainer = doc.data();
+                            const trainerContent = document.getElementById('trainer-content');
+                            
+                            trainerContent.innerHTML = `
+                                <div class="trainer-header">
+                                    ${trainer.photoUrl ? `<img src="${trainer.photoUrl}" alt="${trainer.name}" class="trainer-photo">` : ''}
+                                    <div class="trainer-info">
+                                        <h1>${trainer.name}</h1>
+                                        <p class="position">${trainer.position}</p>
+                                        <p class="experience">Опыт работы: ${trainer.experience}</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="trainer-specialization">
+                                    <h2>Специализация:</h2>
+                                    <ul>
+                                        ${trainer.specialization.map(item => `<li>${item}</li>`).join('')}
+                                    </ul>
+                                </div>
+                                
+                                <a href="trainers.html" class="btn">Вернуться к тренерам</a>
+                            `;
+                        } else {
+                            document.getElementById('trainer-content').innerHTML = '<p>Тренер не найден</p>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Ошибка загрузки тренера:', error);
+                        document.getElementById('trainer-content').innerHTML = '<p>Ошибка загрузки тренера</p>';
+                    });
+            }
+        });
+    </script>
+</body>
+</html>
