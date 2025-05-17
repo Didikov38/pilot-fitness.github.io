@@ -10,30 +10,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Основной шрифт -->
     <link href="https://fonts.cdnfonts.com/css/fustat" rel="stylesheet">
-<!-- Подключение Firebase -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyAJojCBMMgblk6_SwidxIe-VT2Ffo-SAbk",
-    authDomain: "pilot-fitness.firebaseapp.com",
-    projectId: "pilot-fitness",
-    storageBucket: "pilot-fitness.firebasestorage.app",
-    messagingSenderId: "638178270952",
-    appId: "1:638178270952:web:1cec6cdb7f0b751a2e735d"
-  };
-  
-  // Инициализация Firebase
-  firebase.initializeApp(firebaseConfig);
-
-  // Инициализация сервисов
-  const db = firebase.firestore();
-  const storage = firebase.storage();
-  const auth = firebase.auth();
-</script>
 </head>
 <body>
     <!-- Шапка сайта-->
@@ -153,40 +129,32 @@
 <div class="trainers-grid" id="trainers-container">
   <!-- Тренеры будут загружаться здесь -->
 </div>
+ <!-- Динамические карточки (из админки) -->
+  <div id="dynamic-trainers-container"></div>
+</div>
 
 <script>
+  // Загрузка тренеров из Firebase
   document.addEventListener('DOMContentLoaded', function() {
-    db.collection('trainers').orderBy('createdAt', 'desc').get()
+    const container = document.getElementById('dynamic-trainers-container');
+    
+    firebase.firestore().collection('trainers').get()
       .then(snapshot => {
-        const container = document.getElementById('trainers-container');
-        if (!snapshot.empty) {
-          container.innerHTML = '';
-          
-          snapshot.forEach(doc => {
-            const trainer = doc.data();
-            const trainerId = doc.id;
-            
-            const trainerCard = document.createElement('div');
-            trainerCard.className = 'trainer-card card-orange';
-            trainerCard.innerHTML = `
+        snapshot.forEach(doc => {
+          const trainer = doc.data();
+          container.innerHTML += `
+            <div class="trainer-card ${trainer.cardColor || 'card-orange'}">
               <div class="photo-container">
-                ${trainer.photoUrl ? 
-                  `<img src="${trainer.photoUrl}" alt="${trainer.name}" class="trainer-photo">` : 
-                  '<div class="trainer-photo placeholder"></div>'}
+                <img src="${trainer.photoUrl || 'images/trainers/default.jpg'}" 
+                     alt="${trainer.name}" class="trainer-photo">
               </div>
               <div class="trainer-info">
-                <a href="trainer-detail.html?id=${trainerId}" class="trainer-name">${trainer.name}</a>
+                <h3 class="trainer-name">${trainer.name}</h3>
                 <p class="trainer-position">${trainer.position}</p>
-                <a href="trainer-detail.html?id=${trainerId}" class="trainer-name">Подробнее</a>
               </div>
-            `;
-            
-            container.appendChild(trainerCard);
-          });
-        }
-      })
-      .catch(error => {
-        console.error('Ошибка загрузки тренеров:', error);
+            </div>
+          `;
+        });
       });
   });
 </script>
@@ -225,5 +193,56 @@
     </footer>
 
     <script src="script.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script>
+  // Конфиг Firebase (должен совпадать с админкой)
+  const firebaseConfig = {
+    apiKey: "AIzaSyAJojCBMMgblk6_SwidxIe-VT2Ffo-SAbk",
+    authDomain: "pilot-fitness.firebaseapp.com",
+    projectId: "pilot-fitness",
+    storageBucket: "pilot-fitness.appspot.com",
+    messagingSenderId: "638178270952",
+    appId: "1:638178270952:web:1cec6cdb7f0b751a2e735d"
+  };
+
+  // Инициализация Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // Загрузка тренеров
+  document.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById('trainers-container');
+    
+    db.collection('trainers').orderBy('createdAt', 'desc').get()
+      .then(snapshot => {
+        if (!snapshot.empty) {
+          container.innerHTML = '';
+          
+          snapshot.forEach(doc => {
+            const trainer = doc.data();
+            const card = document.createElement('div');
+            card.className = 'trainer-card card-orange';
+            card.innerHTML = `
+              <div class="photo-container">
+                <img src="${trainer.photoUrl || 'images/trainers/default.jpg'}" 
+                     alt="${trainer.name}" class="trainer-photo">
+              </div>
+              <div class="trainer-info">
+                <h3 class="trainer-name">${trainer.name}</h3>
+                <p class="trainer-position">${trainer.position}</p>
+                <p>Опыт: ${trainer.experience}</p>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        }
+      })
+      .catch(error => {
+        console.error("Ошибка загрузки тренеров:", error);
+        container.innerHTML = '<p>Не удалось загрузить тренеров</p>';
+      });
+  });
+</script>
 </body>
 </html>
