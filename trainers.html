@@ -150,7 +150,46 @@
             </div>
         </div>
     </section>
+<div class="trainers-grid" id="trainers-container">
+  <!-- Тренеры будут загружаться здесь -->
+</div>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    db.collection('trainers').orderBy('createdAt', 'desc').get()
+      .then(snapshot => {
+        const container = document.getElementById('trainers-container');
+        if (!snapshot.empty) {
+          container.innerHTML = '';
+          
+          snapshot.forEach(doc => {
+            const trainer = doc.data();
+            const trainerId = doc.id;
+            
+            const trainerCard = document.createElement('div');
+            trainerCard.className = 'trainer-card card-orange';
+            trainerCard.innerHTML = `
+              <div class="photo-container">
+                ${trainer.photoUrl ? 
+                  `<img src="${trainer.photoUrl}" alt="${trainer.name}" class="trainer-photo">` : 
+                  '<div class="trainer-photo placeholder"></div>'}
+              </div>
+              <div class="trainer-info">
+                <a href="trainer-detail.html?id=${trainerId}" class="trainer-name">${trainer.name}</a>
+                <p class="trainer-position">${trainer.position}</p>
+                <a href="trainer-detail.html?id=${trainerId}" class="trainer-name">Подробнее</a>
+              </div>
+            `;
+            
+            container.appendChild(trainerCard);
+          });
+        }
+      })
+      .catch(error => {
+        console.error('Ошибка загрузки тренеров:', error);
+      });
+  });
+</script>
     <!-- Подвал сайта (не изменялся) -->
     <footer class="footer">
         <div class="container footer-container">
