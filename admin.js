@@ -1,3 +1,18 @@
+const firebaseConfig = {
+  apiKey: "AIzaSyAJojCBMMgblk6_SwidxIe-VT2Ffo-SAbk",
+    authDomain: "pilot-fitness.firebaseapp.com",
+    projectId: "pilot-fitness",
+    storageBucket: "pilot-fitness.firebasestorage.app",
+    messagingSenderId: "638178270952",
+    appId: "1:638178270952:web:1cec6cdb7f0b751a2e735d"
+};
+
+// Инициализация Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Затем уже остальной ваш код:
+const db = firebase.firestore();
+const auth = firebase.auth();
 // Инициализация переменных
 const db = firebase.firestore();
 const storage = firebase.storage();
@@ -21,15 +36,14 @@ auth.onAuthStateChanged(user => {
   }
 });
 
-// Функция входа
-function login() {
+// Замените объявление функции на:
+window.login = function() {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
   
-  auth.signInWithEmailAndPassword(email, password)
-    .catch(error => {
-      alert('Ошибка входа: ' + error.message);
-    });
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(() => console.log("Успешный вход!"))
+    .catch(error => alert("Ошибка: " + error.message));
 }
 
 // Функция выхода
