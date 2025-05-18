@@ -7,13 +7,15 @@
   <link href="https://fonts.cdnfonts.com/css/fustat" rel="stylesheet">
   <style>
     :root {
+      --promo-blue: #4285F4;
+  --promo-green: #34A853;
+  --promo-yellow: #FBBC05;
       --primary: #FF6200;
       --secondary: #07A9AE;
       --dark: #1A1A1A;
       --light: #FFFFFF;
       --gray: #D9D9D9;
-    }
-    
+        }      
     body {
       font-family: 'Fustat', 'Arial', sans-serif;
       margin: 0;
@@ -247,6 +249,35 @@
 .close-btn:hover {
   color: var(--primary);
 }
+    /* Стили для цветовых вариантов акций */
+.promo-card.blue {
+  border-left: 5px solid var(--promo-blue);
+}
+.promo-card.green {
+  border-left: 5px solid var(--promo-green);
+}
+.promo-card.yellow {
+  border-left: 5px solid var(--promo-yellow);
+}
+/* Стили для выбора цвета в форме */
+.color-options {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+.color-option {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+.color-option.selected {
+  border-color: var(--dark);
+}
+.color-blue { background: var(--promo-blue); }
+.color-green { background: var(--promo-green); }
+.color-yellow { background: var(--promo-yellow); }
   </style>
 </head>
 <body>
@@ -311,9 +342,14 @@
               <textarea id="promo-desc" class="form-control" placeholder="Введите описание"></textarea>
             </div>
             <div class="form-group">
-              <label for="promo-image">Изображение</label>
-              <input type="file" id="promo-image" class="form-control" accept="image/*">
-            </div>
+    <label>Цвет акции</label>
+    <div class="color-options">
+      <div class="color-option color-blue selected" data-color="blue" onclick="selectColor(this)"></div>
+      <div class="color-option color-green" data-color="green" onclick="selectColor(this)"></div>
+      <div class="color-option color-yellow" data-color="yellow" onclick="selectColor(this)"></div>
+    </div>
+    <input type="hidden" id="promo-color" value="blue">
+  </div>
             <div class="form-group">
               <label>
                 <input type="checkbox" id="promo-active"> Активная акция
@@ -483,27 +519,43 @@ let currentUser = null; // Глобальная переменная для хр
       document.getElementById('promo-desc').value = '';
       document.getElementById('promo-image').value = '';
       document.getElementById('promo-active').checked = false;
-    };
-
-    window.addPromotion = async function() {
-      const title = document.getElementById('promo-title').value;
-      const description = document.getElementById('promo-desc').value;
-      const isActive = document.getElementById('promo-active').checked;
-      const imageFile = document.getElementById('promo-image').files[0];
-      
-      if (!title || !description) {
-        alert('Пожалуйста, заполните все обязательные поля');
-        return;
-      }
-      
-      try {
-        let imageUrl = '';
-        
-        if (imageFile) {
-          const storageRef = ref(storage, 'promotions/' + imageFile.name);
-          await uploadBytes(storageRef, imageFile);
-          imageUrl = await getDownloadURL(storageRef);
-        }
+    };  
+// Выбор цвета акции
+window.selectColor = function(element) {
+  document.querySelectorAll('.color-option').forEach(opt => {
+    opt.classList.remove('selected');
+  });
+  element.classList.add('selected');
+  document.getElementById('promo-color').value = element.dataset.color;
+};
+    
+   window.addPromotion = async function() {
+  const title = document.getElementById('promo-title').value;
+  const description = document.getElementById('promo-desc').value;
+  const isActive = document.getElementById('promo-active').checked;
+  const color = document.getElementById('promo-color').value;
+  
+  if (!title || !description) {
+    alert('Пожалуйста, заполните все обязательные поля');
+    return;
+  }
+  
+  try {
+    await addDoc(collection(db, 'promotions'), {
+      title: title,
+      description: description,
+      isActive: isActive,
+      color: color, // Сохраняем выбранный цвет
+      createdAt: serverTimestamp()
+    });
+    
+    alert('Акция успешно добавлена!');
+    hideAddPromotionForm();
+    loadPromotions();
+  } catch (error) {
+    alert('Ошибка при добавлении акции: ' + error.message);
+  }
+};
         
         await addDoc(collection(db, 'promotions'), {
           title: title,
@@ -537,12 +589,13 @@ let currentUser = null; // Глобальная переменная для хр
         promotionsList.innerHTML = '';
         
         snapshot.forEach(doc => {
-          const promo = doc.data();
-          const promoId = doc.id;
-          
-          const promoCard = document.createElement('div');
-          promoCard.className = 'item-card';
-          promoCard.innerHTML = `
+    const promo = doc.data();
+    const promoId = doc.id;
+    const colorClass = promo.color || 'blue'; // По умолчанию синий
+    
+    const promoCard = document.createElement('div');
+    promoCard.className = `item-card promo-card ${colorClass}`;
+    promoCard.innerHTML = `
             <div class="item-actions">
               <button class="action-btn edit" onclick="editPromotion('${promoId}')"><i class="fas fa-edit"></i></button>
               <button class="action-btn delete" onclick="deletePromotion('${promoId}')"><i class="fas fa-trash"></i></button>
@@ -553,8 +606,8 @@ let currentUser = null; // Глобальная переменная для хр
             <p><strong>Статус:</strong> ${promo.isActive ? 'Активна' : 'Неактивна'}</p>
           `;
           
-          promotionsList.appendChild(promoCard);
-        });
+           promotionsList.appendChild(promoCard);
+  });
       } catch (error) {
         promotionsList.innerHTML = '<p>Ошибка при загрузке акций</p>';
         console.error('Ошибка загрузки акций:', error);
