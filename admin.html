@@ -440,53 +440,53 @@
   <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc,getDoc, serverTimestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+  import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, serverTimestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAJojCBMMgblk6_SwidxIe-VT2Ffo-SAbk",
-  authDomain: "pilot-fitness.firebaseapp.com",
-  projectId: "pilot-fitness",
-  storageBucket: "pilot-fitness.appspot.com",
-  messagingSenderId: "638178270952",
-  appId: "1:638178270952:web:1cec6cdb7f0b751a2e735d"
-};
+  const firebaseConfig = {
+    apiKey: "AIzaSyAJojCBMMgblk6_SwidxIe-VT2Ffo-SAbk",
+    authDomain: "pilot-fitness.firebaseapp.com",
+    projectId: "pilot-fitness",
+    storageBucket: "pilot-fitness.appspot.com",
+    messagingSenderId: "638178270952",
+    appId: "1:638178270952:web:1cec6cdb7f0b751a2e735d"
+  };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-let currentUser = null; // Глобальная переменная для хранения данных пользователя
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  let currentUser = null;
     // Глобальные функции
-    window.login = async function() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        console.log("Успешный вход!");
-      } catch (error) {
-        alert("Ошибка: " + error.message);
-      }
-    };
+   window.login = async function() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
     
-    window.logout = function() {
-      signOut(auth);
-    };
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log("Успешный вход!");
+    } catch (error) {
+      alert("Ошибка: " + error.message);
+    }
+  };
+  
+  window.logout = function() {
+    signOut(auth);
+  };
     // Проверка авторизации
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-         currentUser = user;// Сохраняем пользователя
-        document.getElementById('login-form').classList.add('hidden');
-        document.getElementById('admin-panel').classList.remove('hidden');
-        loadPromotions();
-        loadTrainers();
-        loadMessages();
-      } else {
-         currentUser = null;
-        document.getElementById('login-form').classList.remove('hidden');
-        document.getElementById('admin-panel').classList.add('hidden');
-      }
-    });
+      onAuthStateChanged(auth, (user) => {
+    if (user) {
+      currentUser = user;
+      document.getElementById('login-form').classList.add('hidden');
+      document.getElementById('admin-panel').classList.remove('hidden');
+      loadPromotions();
+      loadTrainers();
+      loadMessages();
+    } else {
+      currentUser = null;
+      document.getElementById('login-form').classList.remove('hidden');
+      document.getElementById('admin-panel').classList.add('hidden');
+    }
+  });
 
     // Навигация по разделам
     document.querySelectorAll('.sidebar-menu a').forEach(link => {
