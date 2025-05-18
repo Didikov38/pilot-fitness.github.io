@@ -260,24 +260,9 @@
       border-left: 5px solid var(--promo-yellow);
     }
     /* Стили для выбора цвета в форме */
-    .color-options {
-      display: flex;
-      gap: 10px;
-      margin: 10px 0;
-    }
-    .color-option {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 2px solid transparent;
-    }
-    .color-option.selected {
-      border-color: var(--dark);
-    }
-    .color-blue { background: var(--promo-blue); }
-    .color-green { background: var(--promo-green); }
-    .color-yellow { background: var(--promo-yellow); }
+    .promo-card.blue { border-left: 5px solid var(--promo-blue); }
+.promo-card.green { border-left: 5px solid var(--promo-green); }
+.promo-card.yellow { border-left: 5px solid var(--promo-yellow); }
   </style>
 </head>
 <body>
@@ -342,14 +327,13 @@
               <textarea id="promo-desc" class="form-control" placeholder="Введите описание"></textarea>
             </div>
             <div class="form-group">
-              <label>Цвет акции</label>
-              <div class="color-options">
-                <div class="color-option color-blue selected" data-color="blue" onclick="selectColor(this)"></div>
-                <div class="color-option color-green" data-color="green" onclick="selectColor(this)"></div>
-                <div class="color-option color-yellow" data-color="yellow" onclick="selectColor(this)"></div>
-              </div>
-              <input type="hidden" id="promo-color" value="blue">
-            </div>
+  <label for="promo-color-select">Цвет акции</label>
+  <select id="promo-color-select" class="form-control">
+    <option value="blue">Синий</option>
+    <option value="green">Зеленый</option>
+    <option value="yellow">Желтый</option>
+  </select>
+</div>
             <div class="form-group">
               <label>
                 <input type="checkbox" id="promo-active"> Активная акция
@@ -530,29 +514,23 @@
   const title = document.getElementById('promo-title').value;
   const description = document.getElementById('promo-desc').value;
   const isActive = document.getElementById('promo-active').checked;
-  
-  // Проверяем, что поле цвета существует
-  const colorInput = document.getElementById('promo-color');
-  if (!colorInput) {
-    alert('Ошибка: не найден элемент выбора цвета!');
-    return;
-  }
-  const color = colorInput.value;
+  const color = document.getElementById('promo-color-select').value; // Получаем выбранный цвет
   
   if (!title || !description) {
-    alert('Заполните все поля!');
+    alert('Пожалуйста, заполните все обязательные поля');
     return;
   }
-
+  
   try {
     await addDoc(collection(db, 'promotions'), {
       title: title,
       description: description,
       isActive: isActive,
-      color: color,
+      color: color, // Сохраняем выбранный цвет
       createdAt: serverTimestamp()
     });
-    alert('Акция добавлена!');
+    
+    alert('Акция успешно добавлена!');
     hideAddPromotionForm();
     loadPromotions();
   } catch (error) {
