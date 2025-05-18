@@ -604,18 +604,20 @@ const db = getFirestore(app);
 
 async function loadTrainers() {
   const trainersList = document.getElementById('trainers-list');
+  if (!trainersList) return;
+  
   trainersList.innerHTML = '<p>Загрузка...</p>';
   
   try {
     const q = query(collection(db, 'trainers'), orderBy('createdAt', 'desc'));
     const snapshot = await getDocs(q);
     
+    trainersList.innerHTML = '';
+    
     if (snapshot.empty) {
       trainersList.innerHTML = '<p>Тренеры не найдены</p>';
       return;
     }
-    
-    trainersList.innerHTML = '';
     
     snapshot.forEach(doc => {
       const trainer = doc.data();
@@ -625,24 +627,30 @@ async function loadTrainers() {
       trainerCard.className = 'item-card';
       trainerCard.innerHTML = `
         <div class="item-actions">
-          <button class="action-btn edit" onclick="editTrainer('${trainerId}')"><i class="fas fa-edit"></i></button>
-          <button class="action-btn delete" onclick="deleteTrainer('${trainerId}')"><i class="fas fa-trash"></i></button>
+          <button class="action-btn edit" onclick="editTrainer('${trainerId}')">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="action-btn delete" onclick="deleteTrainer('${trainerId}')">
+            <i class="fas fa-trash"></i>
+          </button>
         </div>
-        ${trainer.photoUrl ? `<img src="${trainer.photoUrl}" alt="${trainer.name}" style="max-height: 200px; width: 100%; object-fit: cover;">` : ''}
+        ${trainer.photoUrl ? `
+          <img src="${trainer.photoUrl}" alt="${trainer.name}" 
+               style="max-height: 200px; width: 100%; object-fit: cover;">
+        ` : ''}
         <div style="padding: 15px;">
           <h3>${trainer.name}</h3>
           <p><strong>Должность:</strong> ${trainer.position}</p>
           <p><strong>Опыт:</strong> ${trainer.experience}</p>
           <p><strong>Специализация:</strong> ${trainer.specialization?.join(', ') || ''}</p>
-          <p><strong>Цвет карточки:</strong> ${trainer.cardColor || 'card-orange'}</p>
         </div>
       `;
       
       trainersList.appendChild(trainerCard);
     });
   } catch (error) {
-    trainersList.innerHTML = '<p>Ошибка при загрузке тренеров</p>';
-    console.error('Ошибка загрузки тренеров:', error);
+    console.error('Ошибка загрузки:', error);
+    trainersList.innerHTML = '<p>Ошибка загрузки тренеров</p>';
   }
 }
 
