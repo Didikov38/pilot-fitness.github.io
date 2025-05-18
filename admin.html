@@ -526,42 +526,39 @@
     };
 
     // Выбор цвета акции
-    window.selectColor = function(element) {
-      document.querySelectorAll('.color-option').forEach(opt => {
-        opt.classList.remove('selected');
-      });
-      element.classList.add('selected');
-      document.getElementById('promo-color').value = element.dataset.color;
-    };
-    
-    window.addPromotion = async function() {
-      const title = document.getElementById('promo-title').value;
-      const description = document.getElementById('promo-desc').value;
-      const isActive = document.getElementById('promo-active').checked;
-      const color = document.getElementById('promo-color').value;
-      
-      if (!title || !description) {
-        alert('Пожалуйста, заполните все обязательные поля');
-        return;
-      }
-      
-      try {
-        await addDoc(collection(db, 'promotions'), {
-          title: title,
-          description: description,
-          isActive: isActive,
-          color: color,
-          createdAt: serverTimestamp()
-        });
-        
-        alert('Акция успешно добавлена!');
-        hideAddPromotionForm();
-        loadPromotions();
-      } catch (error) {
-        alert('Ошибка при добавлении акции: ' + error.message);
-      }
-    };
+  window.addPromotion = async function() {
+  const title = document.getElementById('promo-title').value;
+  const description = document.getElementById('promo-desc').value;
+  const isActive = document.getElementById('promo-active').checked;
+  
+  // Проверяем, что поле цвета существует
+  const colorInput = document.getElementById('promo-color');
+  if (!colorInput) {
+    alert('Ошибка: не найден элемент выбора цвета!');
+    return;
+  }
+  const color = colorInput.value;
+  
+  if (!title || !description) {
+    alert('Заполните все поля!');
+    return;
+  }
 
+  try {
+    await addDoc(collection(db, 'promotions'), {
+      title: title,
+      description: description,
+      isActive: isActive,
+      color: color,
+      createdAt: serverTimestamp()
+    });
+    alert('Акция добавлена!');
+    hideAddPromotionForm();
+    loadPromotions();
+  } catch (error) {
+    alert('Ошибка при добавлении акции: ' + error.message);
+  }
+};
     async function loadPromotions() {
       const promotionsList = document.getElementById('promotions-list');
       promotionsList.innerHTML = '<p>Загрузка...</p>';
