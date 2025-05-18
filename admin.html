@@ -419,7 +419,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-
+let currentUser = null; // Глобальная переменная для хранения данных пользователя
     // Глобальные функции
     window.login = async function() {
       const email = document.getElementById('email').value;
@@ -436,16 +436,17 @@ const db = getFirestore(app);
     window.logout = function() {
       signOut(auth);
     };
-
     // Проверка авторизации
     onAuthStateChanged(auth, (user) => {
       if (user) {
+         currentUser = user;// Сохраняем пользователя
         document.getElementById('login-form').classList.add('hidden');
         document.getElementById('admin-panel').classList.remove('hidden');
         loadPromotions();
         loadTrainers();
         loadMessages();
       } else {
+         currentUser = null;
         document.getElementById('login-form').classList.remove('hidden');
         document.getElementById('admin-panel').classList.add('hidden');
       }
@@ -773,61 +774,52 @@ function closeEditModal(modalId) {
 
 // Редактирование акции
 window.editPromotion = function(promoId) {
-  currentEditPromoId = promoId;
-  const docRef = doc(db, 'promotions', promoId);
+  if (!currentUser) {
+    alert('Для редактирования необходимо войти в систему');
+    return;
+  }
   
-  getDoc(docRef).then(doc => {
-    if (doc.exists()) {
-      const promo = doc.data();
-      document.getElementById('edit-promo-title').value = promo.title;
-      document.getElementById('edit-promo-desc').value = promo.description;
-      document.getElementById('edit-promo-active').checked = promo.isActive || false;
-      document.getElementById('edit-promotion-modal').classList.remove('hidden');
-    }
-  }).catch(error => {
-    console.error("Ошибка загрузки акции:", error);
-    alert("Не удалось загрузить данные акции");
-  });
-};
-
-window.savePromotionChanges = function() {
-  if (!currentEditPromoId) return;
+  const newTitle = prompt('Введите новое название акции:');
+  if (newTitle === null) return; // Если нажали Отмена
   
-  const docRef = doc(db, 'promotions', currentEditPromoId);
+  const newDesc = prompt('Введите новое описание:');
+  if (newDesc === null) return;
   
-  updateDoc(docRef, {
-    title: document.getElementById('edit-promo-title').value,
-    description: document.getElementById('edit-promo-desc').value,
-    isActive: document.getElementById('edit-promo-active').checked
+  const isActive = confirm('Акция активна? (OK - да, Отмена - нет)');
+  
+  updateDoc(doc(db, 'promotions', promoId), {
+    title: newTitle,
+    description: newDesc,
+    isActive: isActive
   }).then(() => {
-    alert('Акция успешно обновлена!');
-    closeEditModal('edit-promotion-modal');
+    alert('Акция обновлена!');
     loadPromotions();
   }).catch(error => {
-    console.error("Ошибка обновления:", error);
-    alert("Не удалось обновить акцию");
+    alert('Ошибка: ' + error.message);
   });
 };
 
 // Редактирование тренера
 window.editTrainer = function(trainerId) {
-  currentEditTrainerId = trainerId;
-  const docRef = doc(db, 'trainers', trainerId);
+  if (!currentUser) {
+    alert('Для редактирования необходимо войти в систему');
+    return;
+  }
   
-  getDoc(docRef).then(doc => {
-    if (doc.exists()) {
-      const trainer = doc.data();
-      document.getElementById('edit-trainer-name').value = trainer.name;
-      document.getElementById('edit-trainer-position').value = trainer.position;
-      document.getElementById('edit-trainer-specialization').value = trainer.specialization?.join(', ') || '';
-      document.getElementById('edit-trainer-experience').value = trainer.experience;
-      document.getElementById('edit-trainer-photo-url').value = trainer.photoUrl || '';
-      document.getElementById('edit-trainer-card-color').value = trainer.cardColor || 'card-orange';
-      document.getElementById('edit-trainer-modal').classList.remove('hidden');
-    }
+  const newName = prompt('Введите имя тренера:');
+  if (newName === null) return;
+  
+  const newPosition = prompt('Введите должность:');
+  if (newPosition === null) return;
+  
+  updateDoc(doc(db, 'trainers', trainerId), {
+    name: newName,
+    position: newPosition
+  }).then(() => {
+    alert('Данные тренера обновлены!');
+    loadTrainers();
   }).catch(error => {
-    console.error("Ошибка загрузки тренера:", error);
-    alert("Не удалось загрузить данные тренера");
+    alert('Ошибка: ' + error.message);
   });
 };
 
