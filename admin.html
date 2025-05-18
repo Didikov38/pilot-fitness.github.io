@@ -439,6 +439,8 @@
 
   <!-- Firebase SDK -->
   <script type="module">
+    console.log("Firebase App initialized:", app);
+console.log("Auth object:", auth);
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
   import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, serverTimestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
