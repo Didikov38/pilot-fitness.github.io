@@ -546,14 +546,11 @@ const db = getFirestore(app);
       document.getElementById('add-trainer-form').classList.remove('hidden');
     };
 
-    window.hideAddTrainerForm = function() {
-      document.getElementById('add-trainer-form').classList.add('hidden');
-      document.getElementById('trainer-name').value = '';
-      document.getElementById('trainer-position').value = '';
-      document.getElementById('trainer-specialization').value = '';
-      document.getElementById('trainer-experience').value = '';
-      document.getElementById('trainer-photo').value = '';
-    };
+   window.hideAddTrainerForm = function() {
+  const form = document.getElementById('add-trainer-form');
+  if (form) form.classList.add('hidden');
+  loadTrainers(); // Всегда обновляем список после закрытия формы
+};
 
  window.addTrainer = async function() {
   const name = document.getElementById('trainer-name').value;
@@ -569,21 +566,38 @@ const db = getFirestore(app);
   }
   
   try {
+    // Добавляем тренера в Firestore
     await addDoc(collection(db, 'trainers'), {
       name: name,
       position: position,
       specialization: specialization,
       experience: experience,
-      photoUrl: photoUrl, // Просто сохраняем URL как строку
+      photoUrl: photoUrl,
       cardColor: cardColor,
       createdAt: serverTimestamp()
     });
     
+    // Уведомление об успехе
     alert('Тренер успешно добавлен!');
+    
+    // Очищаем форму (проверяем существование элементов)
+    const formFields = [
+      'trainer-name', 'trainer-position', 
+      'trainer-specialization', 'trainer-experience', 
+      'trainer-photo-url'
+    ];
+    
+    formFields.forEach(fieldId => {
+      const field = document.getElementById(fieldId);
+      if (field) field.value = '';
+    });
+    
+    // Скрываем форму и обновляем список
     hideAddTrainerForm();
-    loadTrainers();
+    await loadTrainers(); // Ждём завершения загрузки
+    
   } catch (error) {
-    console.error('Ошибка:', error);
+    console.error('Ошибка добавления:', error);
     alert('Ошибка при добавлении тренера: ' + error.message);
   }
 };
