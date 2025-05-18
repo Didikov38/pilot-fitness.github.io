@@ -457,37 +457,39 @@
   const db = getFirestore(app);
   let currentUser = null;
     // Глобальные функции
-   window.login = async function() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log("Успешный вход!");
-    } catch (error) {
-      alert("Ошибка: " + error.message);
-    }
-  };
-    document.getElementById('login-button').addEventListener('click', login);
+   async function login() {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
   
-  window.logout = function() {
-    signOut(auth);
-  };
-    // Проверка авторизации
-      onAuthStateChanged(auth, (user) => {
-    if (user) {
-      currentUser = user;
-      document.getElementById('login-form').classList.add('hidden');
-      document.getElementById('admin-panel').classList.remove('hidden');
-      loadPromotions();
-      loadTrainers();
-      loadMessages();
-    } else {
-      currentUser = null;
-      document.getElementById('login-form').classList.remove('hidden');
-      document.getElementById('admin-panel').classList.add('hidden');
-    }
-  });
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    currentUser = userCredential.user;
+    console.log("Успешный вход!", currentUser);
+    alert("Вы успешно вошли в систему!");
+  } catch (error) {
+    console.error("Ошибка входа:", error);
+    alert("Ошибка входа: " + error.message);
+  }
+}
+
+// Обработчик для кнопки входа
+document.getElementById('login-button').addEventListener('click', login);
+
+// Проверка состояния авторизации
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    currentUser = user;
+    document.getElementById('login-form').classList.add('hidden');
+    document.getElementById('admin-panel').classList.remove('hidden');
+    loadPromotions();
+    loadTrainers();
+    loadMessages();
+  } else {
+    currentUser = null;
+    document.getElementById('login-form').classList.remove('hidden');
+    document.getElementById('admin-panel').classList.add('hidden');
+  }
+});
 
     // Навигация по разделам
     document.querySelectorAll('.sidebar-menu a').forEach(link => {
