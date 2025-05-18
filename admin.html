@@ -212,6 +212,41 @@
     .action-btn.delete {
       background: #ff3b30;
     }
+    .modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background-color: white;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.close-btn {
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: var(--primary);
+}
   </style>
 </head>
 <body>
@@ -370,7 +405,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, serverTimestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc,getDoc, serverTimestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAJojCBMMgblk6_SwidxIe-VT2Ffo-SAbk",
@@ -727,6 +762,152 @@ async function loadTrainers() {
       const description = document.getElementById('site-description').value;
       alert('Настройки сохранены (функция сохранения в БД будет реализована позже)');
     };
+    // Глобальные переменные для хранения ID редактируемого элемента
+let currentEditPromoId = null;
+let currentEditTrainerId = null;
+
+// Функции для работы с модальными окнами
+function closeEditModal(modalId) {
+  document.getElementById(modalId).classList.add('hidden');
+}
+
+// Редактирование акции
+window.editPromotion = function(promoId) {
+  currentEditPromoId = promoId;
+  const docRef = doc(db, 'promotions', promoId);
+  
+  getDoc(docRef).then(doc => {
+    if (doc.exists()) {
+      const promo = doc.data();
+      document.getElementById('edit-promo-title').value = promo.title;
+      document.getElementById('edit-promo-desc').value = promo.description;
+      document.getElementById('edit-promo-active').checked = promo.isActive || false;
+      document.getElementById('edit-promotion-modal').classList.remove('hidden');
+    }
+  }).catch(error => {
+    console.error("Ошибка загрузки акции:", error);
+    alert("Не удалось загрузить данные акции");
+  });
+};
+
+window.savePromotionChanges = function() {
+  if (!currentEditPromoId) return;
+  
+  const docRef = doc(db, 'promotions', currentEditPromoId);
+  
+  updateDoc(docRef, {
+    title: document.getElementById('edit-promo-title').value,
+    description: document.getElementById('edit-promo-desc').value,
+    isActive: document.getElementById('edit-promo-active').checked
+  }).then(() => {
+    alert('Акция успешно обновлена!');
+    closeEditModal('edit-promotion-modal');
+    loadPromotions();
+  }).catch(error => {
+    console.error("Ошибка обновления:", error);
+    alert("Не удалось обновить акцию");
+  });
+};
+
+// Редактирование тренера
+window.editTrainer = function(trainerId) {
+  currentEditTrainerId = trainerId;
+  const docRef = doc(db, 'trainers', trainerId);
+  
+  getDoc(docRef).then(doc => {
+    if (doc.exists()) {
+      const trainer = doc.data();
+      document.getElementById('edit-trainer-name').value = trainer.name;
+      document.getElementById('edit-trainer-position').value = trainer.position;
+      document.getElementById('edit-trainer-specialization').value = trainer.specialization?.join(', ') || '';
+      document.getElementById('edit-trainer-experience').value = trainer.experience;
+      document.getElementById('edit-trainer-photo-url').value = trainer.photoUrl || '';
+      document.getElementById('edit-trainer-card-color').value = trainer.cardColor || 'card-orange';
+      document.getElementById('edit-trainer-modal').classList.remove('hidden');
+    }
+  }).catch(error => {
+    console.error("Ошибка загрузки тренера:", error);
+    alert("Не удалось загрузить данные тренера");
+  });
+};
+
+window.saveTrainerChanges = function() {
+  if (!currentEditTrainerId) return;
+  
+  const docRef = doc(db, 'trainers', currentEditTrainerId);
+  
+  updateDoc(docRef, {
+    name: document.getElementById('edit-trainer-name').value,
+    position: document.getElementById('edit-trainer-position').value,
+    specialization: document.getElementById('edit-trainer-specialization').value.split(',').map(item => item.trim()),
+    experience: document.getElementById('edit-trainer-experience').value,
+    photoUrl: document.getElementById('edit-trainer-photo-url').value,
+    cardColor: document.getElementById('edit-trainer-card-color').value
+  }).then(() => {
+    alert('Тренер успешно обновлен!');
+    closeEditModal('edit-trainer-modal');
+    loadTrainers();
+  }).catch(error => {
+    console.error("Ошибка обновления:", error);
+    alert("Не удалось обновить тренера");
+  });
+};
   </script>
+<!-- Модальное окно редактирования акции -->
+<div id="edit-promotion-modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeEditModal('edit-promotion-modal')">&times;</span>
+    <h3>Редактировать акцию</h3>
+    <div class="form-group">
+      <label for="edit-promo-title">Название акции</label>
+      <input type="text" id="edit-promo-title" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="edit-promo-desc">Описание</label>
+      <textarea id="edit-promo-desc" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="edit-promo-active">Активная</label>
+      <input type="checkbox" id="edit-promo-active">
+    </div>
+    <button class="btn" onclick="savePromotionChanges()">Сохранить</button>
+  </div>
+</div>
+
+<!-- Модальное окно редактирования тренера -->
+<div id="edit-trainer-modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeEditModal('edit-trainer-modal')">&times;</span>
+    <h3>Редактировать тренера</h3>
+    <div class="form-group">
+      <label for="edit-trainer-name">Имя</label>
+      <input type="text" id="edit-trainer-name" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="edit-trainer-position">Должность</label>
+      <input type="text" id="edit-trainer-position" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="edit-trainer-specialization">Специализация</label>
+      <input type="text" id="edit-trainer-specialization" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="edit-trainer-experience">Опыт</label>
+      <input type="text" id="edit-trainer-experience" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="edit-trainer-photo-url">URL фото</label>
+      <input type="text" id="edit-trainer-photo-url" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="edit-trainer-card-color">Цвет карточки</label>
+      <select id="edit-trainer-card-color" class="form-control">
+        <option value="card-orange">Оранжевый</option>
+        <option value="card-teal">Бирюзовый</option>
+      </select>
+    </div>
+    <button class="btn" onclick="saveTrainerChanges()">Сохранить</button>
+  </div>
+</div>
 </body>
 </html>
