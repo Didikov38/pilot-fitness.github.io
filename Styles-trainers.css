@@ -47,7 +47,7 @@ a {
   color: inherit;
 }
 
-/* ========= ШАПКА (полностью из главной страницы) ========= */
+/* ========= ШАПКА ========= */
 .header {
   background: #FF6200;
   padding: 15px 0;
@@ -87,7 +87,6 @@ a {
   transition: opacity 0.3s;
   padding: 5px 0;
   position: relative;
-  text-decoration: none;
 }
 
 .nav-item a:hover {
@@ -146,17 +145,212 @@ a {
   transform: translateY(-2px);
 }
 
-/* ========= УНИКАЛЬНЫЕ СТИЛИ ДЛЯ КОНКРЕТНОЙ СТРАНИЦЫ ========= */
-/* (оставьте ваши существующие стили для контента страницы) */
-
-/* Например, для services.html: */
-.page-title-section {
-  padding: 40px 0 20px;
+/* ========= СЕКЦИЯ С ТРЕНЕРАМИ ========= */
+.trainers-section {
+  padding: 60px 0;
+  background: #f9f9f9;
 }
 
-.page-title {
-  font-size: 42px;
+.section-title {
+  text-align: center;
+  font-size: 36px;
+  color: #FF6200;
+  margin-bottom: 50px;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: #FF6200;
+}
+
+/* ОБЩИЕ СТИЛИ ДЛЯ ВСЕХ КАРТОЧЕК (статических и динамических) */
+.trainers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  padding: 0 20px;
+  margin-bottom: 50px;
+}
+
+.trainer-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.trainer-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.photo-container {
+  height: 300px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trainer-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.3s ease;
+}
+
+.trainer-card:hover .trainer-photo {
+  transform: scale(1.05);
+}
+
+.trainer-info {
+  padding: 15px;
+  text-align: center;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-orange .trainer-info {
+  background: #FF6200;
+  color: white;
+}
+
+.card-teal .trainer-info {
+  background: #07A9AE;
+  color: white;
+}
+
+.trainer-name {
+  font-size: 20px;
   font-weight: 800;
+  margin-bottom: 5px;
+  display: block;
+  color: inherit;
+}
+
+.trainer-position {
+  font-size: 16px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.trainer-description {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.trainer-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* Стиль для заголовка динамических карточек */
+.dynamic-trainers-title {
+  text-align: center;
+  font-size: 36px;
+  color: #FF6200;
+  margin: 50px 0 30px;
+  position: relative;
+}
+
+.dynamic-trainers-title::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: #FF6200;
+}
+
+/* ========= ПОДВАЛ ========= */
+.footer {
+  background: #FF6200;
+  color: white;
+  padding: 50px 0 30px;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.footer-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.footer-contacts h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  font-weight: 800;
+}
+
+.footer-contacts p {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.footer-logo-block {
+  margin-top: 30px;
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.footer-logo {
+  width: 80px;
+  height: auto;
+}
+
+.footer-copyright {
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.footer-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.qr-code-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.qr-code {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 15px;
+  background: white;
+  padding: 5px;
+}
+
+.footer-documents {
+  text-align: right;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* ========= АДАПТИВНОСТЬ ========= */
@@ -186,259 +380,7 @@ a {
     justify-content: center;
     gap: 15px;
   }
-}
-
-@media (max-width: 768px) {
-  .nav-item a {
-    font-size: 16px;
-  }
   
-  .auth-btn, .buy-btn {
-    padding: 8px 12px;
-    font-size: 14px;
-  }
-  
-  .logo img {
-    width: 70px;
-  }
-  
-  .page-title {
-    font-size: 32px;
-  }
-}
-
-/* ========== СЕКЦИЯ С ТРЕНЕРАМИ ========== */
-.trainers-section {
-  padding: 60px 0; /* Отступы секции */
-  background: #f9f9f9; /* Светлый фон секции */
-}
-
-/* Заголовок секции */
-.section-title {
-  text-align: center;
-  font-size: 36px;
-  color: #FF6200;
-  margin-bottom: 50px;
-  position: relative;
-}
-
-/* Декоративная линия под заголовком */
-.section-title::after {
-  content: '';
-  position: absolute;
-  bottom: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 4px;
-  background: #FF6200;
-}
-
-/* Сетка карточек тренеров */
-.trainers-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Автоподбор колонок */
-  gap: 30px; /* Расстояние между карточками */
-  padding: 0 20px; /* Отступы по бокам */
-}
-
-/* Общие стили карточки */
-.trainer-card {
-  background: white;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Эффект при наведении на карточку */
-.trainer-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-}
-
-/* Контейнер для фото с фиксированной высотой */
-.photo-container {
-  height: 400 px; /* Фиксированная высота фото */
-  overflow: hidden;
-  display: flex;
-  align-items: center; /* Центрируем фото по вертикали */
-  justify-content: center;
-}
-
-/* Стили фотографии тренера */
-.trainer-photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Заполнение контейнера с сохранением пропорций */
-  object-position: top center; /* Кадрирование сверху */
-  transition: transform 0.3s ease;
-}
-
-/* Эффект увеличения фото при наведении */
-.trainer-card:hover .trainer-photo {
-  transform: scale(1.05);
-}
-
-/* Блок с информацией (уменьшенная высота) */
-.trainer-info {
-  padding: 12px; /* Уменьшенные отступы */
-  text-align: center;
-  min-height: 90 px; /* Фиксированная минимальная высота */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-/* Оранжевые карточки (нечетные) */
-.card-orange .trainer-info {
-  background: #FF6200; /* Оранжевый фон */
-  color: white; /* Белый текст */
-}
-
-/* Бирюзовые карточки (четные) */
-.card-teal .trainer-info {
-  background: #07A9AE; /* Бирюзовый фон */
-  color: white;
-}
-
-/* Имя тренера */
-.trainer-name {
-  font-size: 20 px; /* Уменьшенный размер */
-  font-weight: 800;
-  margin-bottom: 3px; /* Уменьшенный отступ */
-}
-
-/* Должность тренера */
-.trainer-position {
-  font-size: 18px;
-  margin-bottom: 10px;
-  font-weight: 600;
-}
-
-/* Описание */
-.trainer-description {
-  font-size: 15px; /* Уменьшенный размер */
-  line-height: 1.4; /* Уменьшенный межстрочный интервал */
-}
-/* ДЛЯ скрипта */
-.item-card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 4px 4px 0 0;
-}
-/* ========== ПОДВАЛ САЙТА ========== */
-.footer {
-  background: #FF6200;
-  color: white;
-  padding: 50px 0 30px;
-}
-
-/* Контейнер подвала */
-.footer-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 40px;
-}
-
-/* Левая часть подвала */
-.footer-left {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex: 1;
-}
-
-/* Контактная информация */
-.footer-contacts h3 {
-  font-size: 20px;
-  margin-bottom: 15px;
-  font-weight: 800;
-}
-
-.footer-contacts p {
-  margin-bottom: 10px;
-  line-height: 1.5;
-}
-
-/* Блок с логотипом и копирайтом */
-.footer-logo-block {
-  margin-top: 30px;
-  display: flex;
-  align-items: flex-end;
-  gap: 20px;
-}
-
-.footer-logo {
-  width: 80px;
-  height: auto;
-}
-
-.footer-copyright {
-  font-size: 14px;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.8); /* Полупрозрачный текст */
-}
-
-/* Правая часть подвала */
-.footer-right {
-  display: flex;
-  justify-content: flex-end;
-}
-
-/* Блок с QR-кодом */
-.qr-code-block {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.qr-code {
-  width: 120px;
-  height: 120px;
-  margin-bottom: 15px;
-  background: white;
-  padding: 5px;
-}
-
-.footer-documents {
-  text-align: right;
-  font-size: 14px;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-/* ========== АДАПТИВНОСТЬ ========== */
-@media (max-width: 992px) {
-  /* Шапка для планшетов */
-  .header-container {
-    flex-wrap: wrap;
-    gap: 15px;
-  }
-  
-  .logo {
-    order: 1;
-  }
-  
-  .main-nav {
-    order: 3;
-    flex: 100%;
-    margin-top: 15px;
-  }
-  
-  .header-actions {
-    order: 2;
-    margin-left: auto;
-  }
-  
-  .nav-list {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-  }
-  
-  /* Подвал для планшетов */
   .footer-container {
     flex-direction: column;
     gap: 30px;
@@ -462,8 +404,7 @@ a {
 }
 
 @media (max-width: 768px) {
-  /* Уменьшение размеров для мобильных */
-  .section-title {
+  .section-title, .dynamic-trainers-title {
     font-size: 32px;
   }
   
@@ -480,99 +421,46 @@ a {
     width: 70px;
   }
   
-  /* Корректировка высоты фото */
   .photo-container {
-    height: 280px;
+    height: 250px;
   }
   
-  /* Ещё более компактный текстовый блок */
   .trainer-info {
-    min-height: 90px;
+    min-height: 100px;
     padding: 10px;
   }
 }
 
 @media (max-width: 576px) {
-  /* Мелкие экраны */
-  .section-title {
+  .section-title, .dynamic-trainers-title {
     font-size: 28px;
   }
   
-  /* Одна колонка карточек */
   .trainers-grid {
     grid-template-columns: 1fr;
+    padding: 0 10px;
   }
   
-  /* Минимальная высота фото */
   .photo-container {
-    height: 250px;
+    height: 220px;
   }
   
-  /* Минимальные отступы */
   .trainer-info {
-    min-height: 80px;
-    padding: 8px;
+    min-height: auto;
+    padding: 15px 10px;
   }
   
   .trainer-name {
-    font-size: 16px;
+    font-size: 18px;
   }
   
   .trainer-position {
-    font-size: 13px;
+    font-size: 14px;
   }
   
-  .trainer-description {
-    font-size: 12px;
+  .card-orange .trainer-info,
+  .card-teal .trainer-info {
+    min-height: auto;
+    padding: 15px 10px;
   }
-}
-/* Уменьшаем ВЫСОТУ цветных блоков (текст остаётся прежним) */
-.card-orange .trainer-info,
-.card-teal .trainer-info {
-    min-height: 50px; /* Было 110px */
-    padding: 4px 8px; /* Уменьшаем только вертикальные отступы */
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Текст остается по центру */
-}
-
-/* Отключаем фиксированную высоту на мобильных */
-@media (max-width: 576px) {
-    .card-orange .trainer-info,
-    .card-teal .trainer-info {
-        min-height: unset; /* Автоподбор по контенту */
-        padding: 10px;
-    }
-}
-/* Стили для ссылки-имени */
-.trainer-name {
-  display: inline-block; /* Чтобы работали отступы */
-  color: inherit; /* Наследует цвет родителя */
-  text-decoration: none; /* Убираем подчёркивание */
-  font-size: 18px;
-  font-weight: 800;
-  margin-bottom: 3px;
-  transition: all 0.3s;
-}
-
-/* Цвет для оранжевых карточек */
-.card-orange .trainer-name {
-  color: white;
-}
-
-/* Цвет для бирюзовых карточек */
-.card-teal .trainer-name {
-  color: white;
-}
-
-/* Эффекты при наведении */
-.trainer-name:hover {
-  text-decoration: underline;
-  opacity: 0.9;
-}
-
-/* Для фокуса с клавиатуры */
-.trainer-name:focus {
-  outline: 2px dashed white;
-  outline-offset: 2px;
 }
