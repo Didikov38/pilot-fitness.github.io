@@ -240,38 +240,41 @@
   const db = firebase.firestore();
 
   // Загрузка тренеров
-  document.addEventListener('DOMContentLoaded', function() {
-    const container = document.getElementById('trainers-container');
-    
-    db.collection('trainers').orderBy('createdAt', 'desc').get()
-      .then(snapshot => {
-        if (!snapshot.empty) {
-          container.innerHTML = '';
-          
-          snapshot.forEach(doc => {
-            const trainer = doc.data();
-            const card = document.createElement('div');
-            card.className = 'trainer-card card-orange';
-            card.innerHTML = `
-              <div class="photo-container">
-                <img src="${trainer.photoUrl || 'images/trainers/default.jpg'}" 
-                     alt="${trainer.name}" class="trainer-photo">
-              </div>
-              <div class="trainer-info">
-                <h3 class="trainer-name">${trainer.name}</h3>
-                <p class="trainer-position">${trainer.position}</p>
-                <p>Опыт: ${trainer.experience}</p>
-              </div>
-            `;
-            container.appendChild(card);
-          });
-        }
-      })
-      .catch(error => {
-        console.error("Ошибка загрузки тренеров:", error);
-        container.innerHTML = '<p>Не удалось загрузить тренеров</p>';
+ document.addEventListener('DOMContentLoaded', function() {
+  const container = document.getElementById('trainers-container');
+  if (!container) return;
+
+  const db = firebase.firestore();
+  
+  db.collection("trainers").orderBy("createdAt", "desc").get()
+    .then(querySnapshot => {
+      container.innerHTML = '';
+      
+      querySnapshot.forEach((doc, index) => {
+        const trainer = doc.data();
+        const cardColor = trainer.cardColor || (index % 2 === 0 ? 'card-orange' : 'card-teal');
+        
+        container.innerHTML += `
+          <div class="trainer-card ${cardColor}">
+            <div class="photo-container">
+              <img src="${trainer.photoUrl || 'images/trainers/default.jpg'}" 
+                   alt="${trainer.name}" class="trainer-photo">
+            </div>
+            <div class="trainer-info">
+              <h3 class="trainer-name">${trainer.name}</h3>
+              <p class="trainer-position">${trainer.position}</p>
+              <p class="trainer-description">Опыт: ${trainer.experience || 'не указан'}</p>
+              <a href="#" class="trainer-link">Подробнее</a>
+            </div>
+          </div>
+        `;
       });
-  });
+    })
+    .catch(error => {
+      console.error("Ошибка:", error);
+      container.innerHTML = '<p>Ошибка загрузки тренеров</p>';
+    });
+});
 </script>
 </body>
 </html>
