@@ -321,7 +321,13 @@ a {
   font-size: 15px; /* Уменьшенный размер */
   line-height: 1.4; /* Уменьшенный межстрочный интервал */
 }
-
+/* ДЛЯ скрипта */
+.item-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px 4px 0 0;
+}
 /* ========== ПОДВАЛ САЙТА ========== */
 .footer {
   background: #FF6200;
