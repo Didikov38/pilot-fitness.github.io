@@ -8,14 +8,14 @@
   <style>
     :root {
       --promo-blue: #4285F4;
-  --promo-green: #34A853;
-  --promo-yellow: #FBBC05;
+      --promo-green: #34A853;
+      --promo-yellow: #FBBC05;
       --primary: #FF6200;
       --secondary: #07A9AE;
       --dark: #1A1A1A;
       --light: #FFFFFF;
       --gray: #D9D9D9;
-        }      
+    }      
     body {
       font-family: 'Fustat', 'Arial', sans-serif;
       margin: 0;
@@ -215,69 +215,69 @@
       background: #ff3b30;
     }
     .modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
-}
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
 
-.modal.hidden {
-  display: none;
-}
+    .modal.hidden {
+      display: none;
+    }
 
-.modal-content {
-  background-color: white;
-  margin: 10% auto;
-  padding: 20px;
-  border-radius: 8px;
-  width: 80%;
-  max-width: 600px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
+    .modal-content {
+      background-color: white;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
 
-.close-btn {
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
+    .close-btn {
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-.close-btn:hover {
-  color: var(--primary);
-}
+    .close-btn:hover {
+      color: var(--primary);
+    }
     /* Стили для цветовых вариантов акций */
-.promo-card.blue {
-  border-left: 5px solid var(--promo-blue);
-}
-.promo-card.green {
-  border-left: 5px solid var(--promo-green);
-}
-.promo-card.yellow {
-  border-left: 5px solid var(--promo-yellow);
-}
-/* Стили для выбора цвета в форме */
-.color-options {
-  display: flex;
-  gap: 10px;
-  margin: 10px 0;
-}
-.color-option {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 2px solid transparent;
-}
-.color-option.selected {
-  border-color: var(--dark);
-}
-.color-blue { background: var(--promo-blue); }
-.color-green { background: var(--promo-green); }
-.color-yellow { background: var(--promo-yellow); }
+    .promo-card.blue {
+      border-left: 5px solid var(--promo-blue);
+    }
+    .promo-card.green {
+      border-left: 5px solid var(--promo-green);
+    }
+    .promo-card.yellow {
+      border-left: 5px solid var(--promo-yellow);
+    }
+    /* Стили для выбора цвета в форме */
+    .color-options {
+      display: flex;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .color-option {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+    .color-option.selected {
+      border-color: var(--dark);
+    }
+    .color-blue { background: var(--promo-blue); }
+    .color-green { background: var(--promo-green); }
+    .color-yellow { background: var(--promo-yellow); }
   </style>
 </head>
 <body>
@@ -292,7 +292,7 @@
       <label for="password">Пароль</label>
       <input type="password" id="password" class="form-control" placeholder="Введите пароль">
     </div>
-    <button class="btn" onclick="login()">Войти</button>
+    <button class="btn" id="login-button">Войти</button>
   </div>
 
   <!-- Админ-панель -->
@@ -342,14 +342,14 @@
               <textarea id="promo-desc" class="form-control" placeholder="Введите описание"></textarea>
             </div>
             <div class="form-group">
-    <label>Цвет акции</label>
-    <div class="color-options">
-      <div class="color-option color-blue selected" data-color="blue" onclick="selectColor(this)"></div>
-      <div class="color-option color-green" data-color="green" onclick="selectColor(this)"></div>
-      <div class="color-option color-yellow" data-color="yellow" onclick="selectColor(this)"></div>
-    </div>
-    <input type="hidden" id="promo-color" value="blue">
-  </div>
+              <label>Цвет акции</label>
+              <div class="color-options">
+                <div class="color-option color-blue selected" data-color="blue" onclick="selectColor(this)"></div>
+                <div class="color-option color-green" data-color="green" onclick="selectColor(this)"></div>
+                <div class="color-option color-yellow" data-color="yellow" onclick="selectColor(this)"></div>
+              </div>
+              <input type="hidden" id="promo-color" value="blue">
+            </div>
             <div class="form-group">
               <label>
                 <input type="checkbox" id="promo-active"> Активная акция
@@ -372,12 +372,12 @@
             <button class="btn" onclick="showAddTrainerForm()"><i class="fas fa-plus"></i> Добавить тренера</button>
           </div>
           <div class="form-group">
-  <label for="trainer-card-color">Цвет карточки</label>
-  <select id="trainer-card-color" class="form-control">
-    <option value="card-orange">Оранжевый</option>
-    <option value="card-teal">Бирюзовый</option>
-  </select>
-</div>      
+            <label for="trainer-card-color">Цвет карточки</label>
+            <select id="trainer-card-color" class="form-control">
+              <option value="card-orange">Оранжевый</option>
+              <option value="card-teal">Бирюзовый</option>
+            </select>
+          </div>      
           <!-- Форма добавления тренера -->
           <div id="add-trainer-form" class="hidden">
             <div class="form-group">
@@ -397,11 +397,11 @@
               <input type="text" id="trainer-experience" class="form-control" placeholder="Например: 5 лет">
             </div>
             <div class="form-group">
-  <label for="trainer-photo-url">Ссылка на фото тренера</label>
-  <input type="text" id="trainer-photo-url" class="form-control" 
-         placeholder="https://raw.githubusercontent.com/.../image.jpg">
-  <small class="text-muted">Загрузите изображение в папку images/trainers вашего репозитория и вставьте прямую ссылку</small>
-</div>
+              <label for="trainer-photo-url">Ссылка на фото тренера</label>
+              <input type="text" id="trainer-photo-url" class="form-control" 
+                    placeholder="https://raw.githubusercontent.com/.../image.jpg">
+              <small class="text-muted">Загрузите изображение в папку images/trainers вашего репозитория и вставьте прямую ссылку</small>
+            </div>
             <button class="btn" onclick="addTrainer()"><i class="fas fa-save"></i> Сохранить</button>
             <button class="btn" onclick="hideAddTrainerForm()" style="background: #ccc; margin-left: 10px;">Отмена</button>
           </div>
@@ -440,22 +440,23 @@
   <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc,getDoc, serverTimestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, serverTimestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAJojCBMMgblk6_SwidxIe-VT2Ffo-SAbk",
-  authDomain: "pilot-fitness.firebaseapp.com",
-  projectId: "pilot-fitness",
-  storageBucket: "pilot-fitness.appspot.com",
-  messagingSenderId: "638178270952",
-  appId: "1:638178270952:web:1cec6cdb7f0b751a2e735d"
-};
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJojCBMMgblk6_SwidxIe-VT2Ffo-SAbk",
+      authDomain: "pilot-fitness.firebaseapp.com",
+      projectId: "pilot-fitness",
+      storageBucket: "pilot-fitness.appspot.com",
+      messagingSenderId: "638178270952",
+      appId: "1:638178270952:web:1cec6cdb7f0b751a2e735d"
+    };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-let currentUser = null; // Глобальная переменная для хранения данных пользователя
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    let currentUser = null;
+
     // Глобальные функции
     window.login = async function() {
       const email = document.getElementById('email').value;
@@ -469,20 +470,23 @@ let currentUser = null; // Глобальная переменная для хр
       }
     };
     
+    document.getElementById('login-button').addEventListener('click', login);
+    
     window.logout = function() {
       signOut(auth);
     };
+    
     // Проверка авторизации
     onAuthStateChanged(auth, (user) => {
       if (user) {
-         currentUser = user;// Сохраняем пользователя
+        currentUser = user;
         document.getElementById('login-form').classList.add('hidden');
         document.getElementById('admin-panel').classList.remove('hidden');
         loadPromotions();
         loadTrainers();
         loadMessages();
       } else {
-         currentUser = null;
+        currentUser = null;
         document.getElementById('login-form').classList.remove('hidden');
         document.getElementById('admin-panel').classList.add('hidden');
       }
@@ -519,49 +523,34 @@ let currentUser = null; // Глобальная переменная для хр
       document.getElementById('promo-desc').value = '';
       document.getElementById('promo-image').value = '';
       document.getElementById('promo-active').checked = false;
-    };  
-// Выбор цвета акции
-window.selectColor = function(element) {
-  document.querySelectorAll('.color-option').forEach(opt => {
-    opt.classList.remove('selected');
-  });
-  element.classList.add('selected');
-  document.getElementById('promo-color').value = element.dataset.color;
-};
+    };
+
+    // Выбор цвета акции
+    window.selectColor = function(element) {
+      document.querySelectorAll('.color-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      element.classList.add('selected');
+      document.getElementById('promo-color').value = element.dataset.color;
+    };
     
-   window.addPromotion = async function() {
-  const title = document.getElementById('promo-title').value;
-  const description = document.getElementById('promo-desc').value;
-  const isActive = document.getElementById('promo-active').checked;
-  const color = document.getElementById('promo-color').value;
-  
-  if (!title || !description) {
-    alert('Пожалуйста, заполните все обязательные поля');
-    return;
-  }
-  
-  try {
-    await addDoc(collection(db, 'promotions'), {
-      title: title,
-      description: description,
-      isActive: isActive,
-      color: color, // Сохраняем выбранный цвет
-      createdAt: serverTimestamp()
-    });
-    
-    alert('Акция успешно добавлена!');
-    hideAddPromotionForm();
-    loadPromotions();
-  } catch (error) {
-    alert('Ошибка при добавлении акции: ' + error.message);
-  }
-};
-        
+    window.addPromotion = async function() {
+      const title = document.getElementById('promo-title').value;
+      const description = document.getElementById('promo-desc').value;
+      const isActive = document.getElementById('promo-active').checked;
+      const color = document.getElementById('promo-color').value;
+      
+      if (!title || !description) {
+        alert('Пожалуйста, заполните все обязательные поля');
+        return;
+      }
+      
+      try {
         await addDoc(collection(db, 'promotions'), {
           title: title,
           description: description,
-          imageUrl: imageUrl,
           isActive: isActive,
+          color: color,
           createdAt: serverTimestamp()
         });
         
@@ -589,13 +578,13 @@ window.selectColor = function(element) {
         promotionsList.innerHTML = '';
         
         snapshot.forEach(doc => {
-    const promo = doc.data();
-    const promoId = doc.id;
-    const colorClass = promo.color || 'blue'; // По умолчанию синий
-    
-    const promoCard = document.createElement('div');
-    promoCard.className = `item-card promo-card ${colorClass}`;
-    promoCard.innerHTML = `
+          const promo = doc.data();
+          const promoId = doc.id;
+          const colorClass = promo.color || 'blue';
+          
+          const promoCard = document.createElement('div');
+          promoCard.className = `item-card promo-card ${colorClass}`;
+          promoCard.innerHTML = `
             <div class="item-actions">
               <button class="action-btn edit" onclick="editPromotion('${promoId}')"><i class="fas fa-edit"></i></button>
               <button class="action-btn delete" onclick="deletePromotion('${promoId}')"><i class="fas fa-trash"></i></button>
@@ -606,8 +595,8 @@ window.selectColor = function(element) {
             <p><strong>Статус:</strong> ${promo.isActive ? 'Активна' : 'Неактивна'}</p>
           `;
           
-           promotionsList.appendChild(promoCard);
-  });
+          promotionsList.appendChild(promoCard);
+        });
       } catch (error) {
         promotionsList.innerHTML = '<p>Ошибка при загрузке акций</p>';
         console.error('Ошибка загрузки акций:', error);
@@ -635,113 +624,109 @@ window.selectColor = function(element) {
       document.getElementById('add-trainer-form').classList.remove('hidden');
     };
 
-   window.hideAddTrainerForm = function() {
-  const form = document.getElementById('add-trainer-form');
-  if (form) form.classList.add('hidden');
-  loadTrainers(); // Всегда обновляем список после закрытия формы
-};
+    window.hideAddTrainerForm = function() {
+      const form = document.getElementById('add-trainer-form');
+      if (form) form.classList.add('hidden');
+      loadTrainers();
+    };
 
- window.addTrainer = async function() {
-  const name = document.getElementById('trainer-name').value;
-  const position = document.getElementById('trainer-position').value;
-  const specialization = document.getElementById('trainer-specialization').value.split(',').map(item => item.trim());
-  const experience = document.getElementById('trainer-experience').value;
-  const photoUrl = document.getElementById('trainer-photo-url').value;
-  const cardColor = document.getElementById('trainer-card-color').value;
-  
-  if (!name || !position || !experience) {
-    alert('Пожалуйста, заполните все обязательные поля');
-    return;
-  }
-  
-  try {
-    // Добавляем тренера в Firestore
-    await addDoc(collection(db, 'trainers'), {
-      name: name,
-      position: position,
-      specialization: specialization,
-      experience: experience,
-      photoUrl: photoUrl,
-      cardColor: cardColor,
-      createdAt: serverTimestamp()
-    });
-    
-    // Уведомление об успехе
-    alert('Тренер успешно добавлен!');
-    
-    // Очищаем форму (проверяем существование элементов)
-    const formFields = [
-      'trainer-name', 'trainer-position', 
-      'trainer-specialization', 'trainer-experience', 
-      'trainer-photo-url'
-    ];
-    
-    formFields.forEach(fieldId => {
-      const field = document.getElementById(fieldId);
-      if (field) field.value = '';
-    });
-    
-    // Скрываем форму и обновляем список
-    hideAddTrainerForm();
-    await loadTrainers(); // Ждём завершения загрузки
-    
-  } catch (error) {
-    console.error('Ошибка добавления:', error);
-    alert('Ошибка при добавлении тренера: ' + error.message);
-  }
-};
+    window.addTrainer = async function() {
+      const name = document.getElementById('trainer-name').value;
+      const position = document.getElementById('trainer-position').value;
+      const specialization = document.getElementById('trainer-specialization').value.split(',').map(item => item.trim());
+      const experience = document.getElementById('trainer-experience').value;
+      const photoUrl = document.getElementById('trainer-photo-url').value;
+      const cardColor = document.getElementById('trainer-card-color').value;
+      
+      if (!name || !position || !experience) {
+        alert('Пожалуйста, заполните все обязательные поля');
+        return;
+      }
+      
+      try {
+        await addDoc(collection(db, 'trainers'), {
+          name: name,
+          position: position,
+          specialization: specialization,
+          experience: experience,
+          photoUrl: photoUrl,
+          cardColor: cardColor,
+          createdAt: serverTimestamp()
+        });
+        
+        alert('Тренер успешно добавлен!');
+        
+        const formFields = [
+          'trainer-name', 'trainer-position', 
+          'trainer-specialization', 'trainer-experience', 
+          'trainer-photo-url'
+        ];
+        
+        formFields.forEach(fieldId => {
+          const field = document.getElementById(fieldId);
+          if (field) field.value = '';
+        });
+        
+        hideAddTrainerForm();
+        await loadTrainers();
+        
+      } catch (error) {
+        console.error('Ошибка добавления:', error);
+        alert('Ошибка при добавлении тренера: ' + error.message);
+      }
+    };
 
-async function loadTrainers() {
-  const trainersList = document.getElementById('trainers-list');
-  if (!trainersList) return;
-  
-  trainersList.innerHTML = '<p>Загрузка...</p>';
-  
-  try {
-    const q = query(collection(db, 'trainers'), orderBy('createdAt', 'desc'));
-    const snapshot = await getDocs(q);
-    
-    trainersList.innerHTML = '';
-    
-    if (snapshot.empty) {
-      trainersList.innerHTML = '<p>Тренеры не найдены</p>';
-      return;
+    async function loadTrainers() {
+      const trainersList = document.getElementById('trainers-list');
+      if (!trainersList) return;
+      
+      trainersList.innerHTML = '<p>Загрузка...</p>';
+      
+      try {
+        const q = query(collection(db, 'trainers'), orderBy('createdAt', 'desc'));
+        const snapshot = await getDocs(q);
+        
+        trainersList.innerHTML = '';
+        
+        if (snapshot.empty) {
+          trainersList.innerHTML = '<p>Тренеры не найдены</p>';
+          return;
+        }
+        
+        snapshot.forEach(doc => {
+          const trainer = doc.data();
+          const trainerId = doc.id;
+          
+          const trainerCard = document.createElement('div');
+          trainerCard.className = 'item-card';
+          trainerCard.innerHTML = `
+            <div class="item-actions">
+              <button class="action-btn edit" onclick="editTrainer('${trainerId}')">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="action-btn delete" onclick="deleteTrainer('${trainerId}')">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+            ${trainer.photoUrl ? `
+              <img src="${trainer.photoUrl}" alt="${trainer.name}" 
+                   style="max-height: 200px; width: 100%; object-fit: cover;">
+            ` : ''}
+            <div style="padding: 15px;">
+              <h3>${trainer.name}</h3>
+              <p><strong>Должность:</strong> ${trainer.position}</p>
+              <p><strong>Опыт:</strong> ${trainer.experience}</p>
+              <p><strong>Специализация:</strong> ${trainer.specialization?.join(', ') || ''}</p>
+            </div>
+          `;
+          
+          trainersList.appendChild(trainerCard);
+        });
+      } catch (error) {
+        console.error('Ошибка загрузки:', error);
+        trainersList.innerHTML = '<p>Ошибка загрузки тренеров</p>';
+      }
     }
-    
-    snapshot.forEach(doc => {
-      const trainer = doc.data();
-      const trainerId = doc.id;
-      
-      const trainerCard = document.createElement('div');
-      trainerCard.className = 'item-card';
-      trainerCard.innerHTML = `
-        <div class="item-actions">
-          <button class="action-btn edit" onclick="editTrainer('${trainerId}')">
-            <i class="fas fa-edit"></i>
-          </button>
-          <button class="action-btn delete" onclick="deleteTrainer('${trainerId}')">
-            <i class="fas fa-trash"></i>
-          </button>
-        </div>
-        ${trainer.photoUrl ? `
-          <img src="${trainer.photoUrl}" alt="${trainer.name}" 
-               style="max-height: 200px; width: 100%; object-fit: cover;">
-        ` : ''}
-        <div style="padding: 15px;">
-          <h3>${trainer.name}</h3>
-          <p><strong>Должность:</strong> ${trainer.position}</p>
-          <p><strong>Опыт:</strong> ${trainer.experience}</p>
-          <p><strong>Специализация:</strong> ${trainer.specialization?.join(', ') || ''}</p>
-        </div>
-      `;
-      
-      trainersList.appendChild(trainerCard);
-    });
-  } catch (error) {
-    console.error('Ошибка загрузки:', error);
-    trainersList.innerHTML = '<p>Ошибка загрузки тренеров</p>';
-  }
-}
 
     window.deleteTrainer = async function(trainerId) {
       if (confirm('Вы уверены, что хотите удалить этого тренера?')) {
@@ -816,140 +801,142 @@ async function loadTrainers() {
       const description = document.getElementById('site-description').value;
       alert('Настройки сохранены (функция сохранения в БД будет реализована позже)');
     };
+
     // Глобальные переменные для хранения ID редактируемого элемента
-let currentEditPromoId = null;
-let currentEditTrainerId = null;
+    let currentEditPromoId = null;
+    let currentEditTrainerId = null;
 
-// Функции для работы с модальными окнами
-function closeEditModal(modalId) {
-  document.getElementById(modalId).classList.add('hidden');
-}
+    // Функции для работы с модальными окнами
+    function closeEditModal(modalId) {
+      document.getElementById(modalId).classList.add('hidden');
+    }
 
-// Редактирование акции
-window.editPromotion = function(promoId) {
-  if (!currentUser) {
-    alert('Для редактирования необходимо войти в систему');
-    return;
-  }
-  
-  const newTitle = prompt('Введите новое название акции:');
-  if (newTitle === null) return; // Если нажали Отмена
-  
-  const newDesc = prompt('Введите новое описание:');
-  if (newDesc === null) return;
-  
-  const isActive = confirm('Акция активна? (OK - да, Отмена - нет)');
-  
-  updateDoc(doc(db, 'promotions', promoId), {
-    title: newTitle,
-    description: newDesc,
-    isActive: isActive
-  }).then(() => {
-    alert('Акция обновлена!');
-    loadPromotions();
-  }).catch(error => {
-    alert('Ошибка: ' + error.message);
-  });
-};
+    // Редактирование акции
+    window.editPromotion = function(promoId) {
+      if (!currentUser) {
+        alert('Для редактирования необходимо войти в систему');
+        return;
+      }
+      
+      const newTitle = prompt('Введите новое название акции:');
+      if (newTitle === null) return;
+      
+      const newDesc = prompt('Введите новое описание:');
+      if (newDesc === null) return;
+      
+      const isActive = confirm('Акция активна? (OK - да, Отмена - нет)');
+      
+      updateDoc(doc(db, 'promotions', promoId), {
+        title: newTitle,
+        description: newDesc,
+        isActive: isActive
+      }).then(() => {
+        alert('Акция обновлена!');
+        loadPromotions();
+      }).catch(error => {
+        alert('Ошибка: ' + error.message);
+      });
+    };
 
-// Редактирование тренера
-window.editTrainer = function(trainerId) {
-  if (!currentUser) {
-    alert('Для редактирования необходимо войти в систему');
-    return;
-  }
-  
-  const newName = prompt('Введите имя тренера:');
-  if (newName === null) return;
-  
-  const newPosition = prompt('Введите должность:');
-  if (newPosition === null) return;
-  
-  updateDoc(doc(db, 'trainers', trainerId), {
-    name: newName,
-    position: newPosition
-  }).then(() => {
-    alert('Данные тренера обновлены!');
-    loadTrainers();
-  }).catch(error => {
-    alert('Ошибка: ' + error.message);
-  });
-};
+    // Редактирование тренера
+    window.editTrainer = function(trainerId) {
+      if (!currentUser) {
+        alert('Для редактирования необходимо войти в систему');
+        return;
+      }
+      
+      const newName = prompt('Введите имя тренера:');
+      if (newName === null) return;
+      
+      const newPosition = prompt('Введите должность:');
+      if (newPosition === null) return;
+      
+      updateDoc(doc(db, 'trainers', trainerId), {
+        name: newName,
+        position: newPosition
+      }).then(() => {
+        alert('Данные тренера обновлены!');
+        loadTrainers();
+      }).catch(error => {
+        alert('Ошибка: ' + error.message);
+      });
+    };
 
-window.saveTrainerChanges = function() {
-  if (!currentEditTrainerId) return;
-  
-  const docRef = doc(db, 'trainers', currentEditTrainerId);
-  
-  updateDoc(docRef, {
-    name: document.getElementById('edit-trainer-name').value,
-    position: document.getElementById('edit-trainer-position').value,
-    specialization: document.getElementById('edit-trainer-specialization').value.split(',').map(item => item.trim()),
-    experience: document.getElementById('edit-trainer-experience').value,
-    photoUrl: document.getElementById('edit-trainer-photo-url').value,
-    cardColor: document.getElementById('edit-trainer-card-color').value
-  }).then(() => {
-    alert('Тренер успешно обновлен!');
-    closeEditModal('edit-trainer-modal');
-    loadTrainers();
-  }).catch(error => {
-    console.error("Ошибка обновления:", error);
-    alert("Не удалось обновить тренера");
-  });
-};
+    window.saveTrainerChanges = function() {
+      if (!currentEditTrainerId) return;
+      
+      const docRef = doc(db, 'trainers', currentEditTrainerId);
+      
+      updateDoc(docRef, {
+        name: document.getElementById('edit-trainer-name').value,
+        position: document.getElementById('edit-trainer-position').value,
+        specialization: document.getElementById('edit-trainer-specialization').value.split(',').map(item => item.trim()),
+        experience: document.getElementById('edit-trainer-experience').value,
+        photoUrl: document.getElementById('edit-trainer-photo-url').value,
+        cardColor: document.getElementById('edit-trainer-card-color').value
+      }).then(() => {
+        alert('Тренер успешно обновлен!');
+        closeEditModal('edit-trainer-modal');
+        loadTrainers();
+      }).catch(error => {
+        console.error("Ошибка обновления:", error);
+        alert("Не удалось обновить тренера");
+      });
+    };
   </script>
-<!-- Модальное окно редактирования акции -->
-<div id="edit-promotion-modal" class="modal hidden">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeEditModal('edit-promotion-modal')">&times;</span>
-    <h3>Редактировать акцию</h3>
-    <div class="form-group">
-      <label for="edit-promo-title">Название акции</label>
-      <input type="text" id="edit-promo-title" class="form-control">
+  
+  <!-- Модальное окно редактирования акции -->
+  <div id="edit-promotion-modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeEditModal('edit-promotion-modal')">&times;</span>
+      <h3>Редактировать акцию</h3>
+      <div class="form-group">
+        <label for="edit-promo-title">Название акции</label>
+        <input type="text" id="edit-promo-title" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="edit-promo-desc">Описание</label>
+        <textarea id="edit-promo-desc" class="form-control"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="edit-promo-active">Активная</label>
+        <input type="checkbox" id="edit-promo-active">
+      </div>
+      <button class="btn" onclick="savePromotionChanges()">Сохранить</button>
     </div>
-    <div class="form-group">
-      <label for="edit-promo-desc">Описание</label>
-      <textarea id="edit-promo-desc" class="form-control"></textarea>
-    </div>
-    <div class="form-group">
-      <label for="edit-promo-active">Активная</label>
-      <input type="checkbox" id="edit-promo-active">
-    </div>
-    <button class="btn" onclick="savePromotionChanges()">Сохранить</button>
   </div>
-</div>
 
-<!-- Модальное окно редактирования тренера -->
-<div id="edit-trainer-modal" class="modal hidden">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeEditModal('edit-trainer-modal')">&times;</span>
-    <h3>Редактировать тренера</h3>
-    <div class="form-group">
-      <label for="edit-trainer-name">Имя</label>
-      <input type="text" id="edit-trainer-name" class="form-control">
-    </div>
-    <div class="form-group">
-      <label for="edit-trainer-position">Должность</label>
-      <input type="text" id="edit-trainer-position" class="form-control">
-    </div>
-    <div class="form-group">
-      <label for="edit-trainer-specialization">Специализация</label>
-      <input type="text" id="edit-trainer-specialization" class="form-control">
-    </div>
-    <div class="form-group">
-      <label for="edit-trainer-experience">Опыт</label>
-      <input type="text" id="edit-trainer-experience" class="form-control">
-    </div>
-    <div class="form-group">
-      <label for="edit-trainer-photo-url">URL фото</label>
-      <input type="text" id="edit-trainer-photo-url" class="form-control">
-    </div>
-    <div class="form-group">
-      <label for="edit-trainer-card-color">Цвет карточки</label>
-      <select id="edit-trainer-card-color" class="form-control">
-        <option value="card-orange">Оранжевый</option>
-        <option value="card-teal">Бирюзовый</option>
-      </select>
+  <!-- Модальное окно редактирования тренера -->
+  <div id="edit-trainer-modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeEditModal('edit-trainer-modal')">&times;</span>
+      <h3>Редактировать тренера</h3>
+      <div class="form-group">
+        <label for="edit-trainer-name">Имя</label>
+        <input type="text" id="edit-trainer-name" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="edit-trainer-position">Должность</label>
+        <input type="text" id="edit-trainer-position" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="edit-trainer-specialization">Специализация</label>
+        <input type="text" id="edit-trainer-specialization" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="edit-trainer-experience">Опыт</label>
+        <input type="text" id="edit-trainer-experience" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="edit-trainer-photo-url">URL фото</label>
+        <input type="text" id="edit-trainer-photo-url" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="edit-trainer-card-color">Цвет карточки</label>
+        <select id="edit-trainer-card-color" class="form-control">
+          <option value="card-orange">Оранжевый</option>
+          <option value="card-teal">Бирюзовый</option>
+          /select>
     </div>
     <button class="btn" onclick="saveTrainerChanges()">Сохранить</button>
   </div>
