@@ -556,84 +556,90 @@
       document.getElementById('trainer-photo').value = '';
     };
 
-    window.addTrainer = async function() {
-      const name = document.getElementById('trainer-name').value;
-      const position = document.getElementById('trainer-position').value;
-      const specialization = document.getElementById('trainer-specialization').value.split(',').map(item => item.trim());
-      const experience = document.getElementById('trainer-experience').value;
-      const photoFile = document.getElementById('trainer-photo').files[0];
-      
-      if (!name || !position || !experience) {
-        alert('Пожалуйста, заполните все обязательные поля');
-        return;
-      }
-      
-      try {
-        let photoUrl = '';
-        
-        if (photoFile) {
-          const storageRef = ref(storage, 'trainers/' + photoFile.name);
-          await uploadBytes(storageRef, photoFile);
-          photoUrl = await getDownloadURL(storageRef);
-        }
-        
-        await addDoc(collection(db, 'trainers'), {
-          name: name,
-          position: position,
-          specialization: specialization,
-          experience: experience,
-          photoUrl: photoUrl,
-          createdAt: serverTimestamp()
-        });
-        
-        alert('Тренер успешно добавлен!');
-        hideAddTrainerForm();
-        loadTrainers();
-      } catch (error) {
-        alert('Ошибка при добавлении тренера: ' + error.message);
-      }
-    };
+ window.addTrainer = async function() {
+  const name = document.getElementById('trainer-name').value;
+  const position = document.getElementById('trainer-position').value;
+  const specialization = document.getElementById('trainer-specialization').value.split(',').map(item => item.trim());
+  const experience = document.getElementById('trainer-experience').value;
+  const photoFile = document.getElementById('trainer-photo').files[0];
+  const cardColor = document.getElementById('trainer-card-color').value;
+  
+  if (!name || !position || !experience) {
+    alert('Пожалуйста, заполните все обязательные поля');
+    return;
+  }
+  
+  try {
+    let photoUrl = '';
+    
+    if (photoFile) {
+      const storageRef = ref(storage, 'trainers/' + Date.now() + '_' + photoFile.name);
+      await uploadBytes(storageRef, photoFile);
+      photoUrl = await getDownloadURL(storageRef);
+    }
+    
+    await addDoc(collection(db, 'trainers'), {
+      name: name,
+      position: position,
+      specialization: specialization,
+      experience: experience,
+      photoUrl: photoUrl,
+      cardColor: cardColor, // Добавляем цвет карточки
+      createdAt: serverTimestamp()
+    });
+    
+    alert('Тренер успешно добавлен!');
+    hideAddTrainerForm();
+    loadTrainers();
+  } catch (error) {
+    console.error('Ошибка:', error);
+    alert('Ошибка при добавлении тренера: ' + error.message);
+  }
+};
 
     async function loadTrainers() {
-      const trainersList = document.getElementById('trainers-list');
-      trainersList.innerHTML = '<p>Загрузка...</p>';
-      
-      try {
-        const q = query(collection(db, 'trainers'), orderBy('createdAt', 'desc'));
-        const snapshot = await getDocs(q);
-        
-        if (snapshot.empty) {
-          trainersList.innerHTML = '<p>Тренеры не найдены</p>';
-          return;
-        }
-        
-        trainersList.innerHTML = '';
-        
-        snapshot.forEach(doc => {
-          const trainer = doc.data();
-          const trainerId = doc.id;
-          
-          const trainerCard = document.createElement('div');
-          trainerCard.className = 'item-card';
-          trainerCard.innerHTML = `
-            <div class="item-actions">
-              <button class="action-btn edit" onclick="editTrainer('${trainerId}')"><i class="fas fa-edit"></i></button>
-              <button class="action-btn delete" onclick="deleteTrainer('${trainerId}')"><i class="fas fa-trash"></i></button>
-            </div>
-            ${trainer.photoUrl ? `<img src="${trainer.photoUrl}" alt="${trainer.name}" style="max-height: 200px;">` : ''}
-            <h3>${trainer.name}</h3>
-            <p><strong>Должность:</strong> ${trainer.position}</p>
-            <p><strong>Опыт:</strong> ${trainer.experience}</p>
-            <p><strong>Специализация:</strong> ${trainer.specialization.join(', ')}</p>
-          `;
-          
-          trainersList.appendChild(trainerCard);
-        });
-      } catch (error) {
-        trainersList.innerHTML = '<p>Ошибка при загрузке тренеров</p>';
-        console.error('Ошибка загрузки тренеров:', error);
-      }
+  const trainersList = document.getElementById('trainers-list');
+  trainersList.innerHTML = '<p>Загрузка...</p>';
+  
+  try {
+    const q = query(collection(db, 'trainers'), orderBy('createdAt', 'desc'));
+    const snapshot = await getDocs(q);
+    
+    if (snapshot.empty) {
+      trainersList.innerHTML = '<p>Тренеры не найдены</p>';
+      return;
     }
+    
+    trainersList.innerHTML = '';
+    
+    snapshot.forEach(doc => {
+      const trainer = doc.data();
+      const trainerId = doc.id;
+      
+      const trainerCard = document.createElement('div');
+      trainerCard.className = 'item-card';
+      trainerCard.innerHTML = `
+        <div class="item-actions">
+          <button class="action-btn edit" onclick="editTrainer('${trainerId}')"><i class="fas fa-edit"></i></button>
+          <button class="action-btn delete" onclick="deleteTrainer('${trainerId}')"><i class="fas fa-trash"></i></button>
+        </div>
+        ${trainer.photoUrl ? `<img src="${trainer.photoUrl}" alt="${trainer.name}" style="max-height: 200px; width: 100%; object-fit: cover;">` : ''}
+        <div style="padding: 15px;">
+          <h3>${trainer.name}</h3>
+          <p><strong>Должность:</strong> ${trainer.position}</p>
+          <p><strong>Опыт:</strong> ${trainer.experience}</p>
+          <p><strong>Специализация:</strong> ${trainer.specialization?.join(', ') || ''}</p>
+          <p><strong>Цвет карточки:</strong> ${trainer.cardColor || 'card-orange'}</p>
+        </div>
+      `;
+      
+      trainersList.appendChild(trainerCard);
+    });
+  } catch (error) {
+    trainersList.innerHTML = '<p>Ошибка при загрузке тренеров</p>';
+    console.error('Ошибка загрузки тренеров:', error);
+  }
+}
 
     window.deleteTrainer = async function(trainerId) {
       if (confirm('Вы уверены, что хотите удалить этого тренера?')) {
