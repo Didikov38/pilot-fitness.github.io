@@ -292,7 +292,7 @@
       <label for="password">Пароль</label>
       <input type="password" id="password" class="form-control" placeholder="Введите пароль">
     </div>
-    <button class="btn" onclick="login()">Войти</button>
+    <button class="btn" id="login-button">Войти</button>
   </div>
 
   <!-- Админ-панель -->
@@ -468,6 +468,7 @@
       alert("Ошибка: " + error.message);
     }
   };
+    document.getElementById('login-button').addEventListener('click', login);
   
   window.logout = function() {
     signOut(auth);
