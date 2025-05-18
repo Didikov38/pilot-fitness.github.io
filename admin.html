@@ -367,24 +367,21 @@
   <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
-    import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, serverTimestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-storage.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, serverTimestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAJojCBMMgblk6_SwidxIe-VT2Ffo-SAbk",
-      authDomain: "pilot-fitness.firebaseapp.com",
-      projectId: "pilot-fitness",
-      storageBucket: "pilot-fitness.appspot.com",
-      messagingSenderId: "638178270952",
-      appId: "1:638178270952:web:1cec6cdb7f0b751a2e735d"
-    };
+const firebaseConfig = {
+  apiKey: "AIzaSyAJojCBMMgblk6_SwidxIe-VT2Ffo-SAbk",
+  authDomain: "pilot-fitness.firebaseapp.com",
+  projectId: "pilot-fitness",
+  storageBucket: "pilot-fitness.appspot.com",
+  messagingSenderId: "638178270952",
+  appId: "1:638178270952:web:1cec6cdb7f0b751a2e735d"
+};
 
-    // Инициализация Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
     // Глобальные функции
     window.login = async function() {
@@ -561,7 +558,7 @@
   const position = document.getElementById('trainer-position').value;
   const specialization = document.getElementById('trainer-specialization').value.split(',').map(item => item.trim());
   const experience = document.getElementById('trainer-experience').value;
-  const photoFile = document.getElementById('trainer-photo').files[0];
+  const photoUrl = document.getElementById('trainer-photo-url').value;
   const cardColor = document.getElementById('trainer-card-color').value;
   
   if (!name || !position || !experience) {
@@ -570,21 +567,13 @@
   }
   
   try {
-    let photoUrl = '';
-    
-    if (photoFile) {
-      const storageRef = ref(storage, 'trainers/' + Date.now() + '_' + photoFile.name);
-      await uploadBytes(storageRef, photoFile);
-      photoUrl = await getDownloadURL(storageRef);
-    }
-    
     await addDoc(collection(db, 'trainers'), {
       name: name,
       position: position,
       specialization: specialization,
       experience: experience,
-      photoUrl: photoUrl,
-      cardColor: cardColor, // Добавляем цвет карточки
+      photoUrl: photoUrl, // Просто сохраняем URL как строку
+      cardColor: cardColor,
       createdAt: serverTimestamp()
     });
     
@@ -597,7 +586,7 @@
   }
 };
 
-    async function loadTrainers() {
+async function loadTrainers() {
   const trainersList = document.getElementById('trainers-list');
   trainersList.innerHTML = '<p>Загрузка...</p>';
   
