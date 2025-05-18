@@ -318,30 +318,30 @@
           
           <!-- Форма добавления акции -->
           <div id="add-promotion-form" class="hidden">
-            <div class="form-group">
-              <label for="promo-title">Название акции</label>
-              <input type="text" id="promo-title" class="form-control" placeholder="Введите название">
-            </div>
-            <div class="form-group">
-              <label for="promo-desc">Описание акции</label>
-              <textarea id="promo-desc" class="form-control" placeholder="Введите описание"></textarea>
-            </div>
-            <div class="form-group">
-  <label for="promo-color-select">Цвет акции</label>
-  <select id="promo-color-select" class="form-control">
-    <option value="blue">Синий</option>
-    <option value="green">Зеленый</option>
-    <option value="yellow">Желтый</option>
-  </select>
+  <div class="form-group">
+    <label for="promo-title">Название акции</label>
+    <input type="text" id="promo-title" class="form-control" placeholder="Введите название">
+  </div>
+  <div class="form-group">
+    <label for="promo-desc">Описание акции</label>
+    <textarea id="promo-desc" class="form-control" placeholder="Введите описание"></textarea>
+  </div>
+  <div class="form-group">
+    <label for="promo-color-select">Цвет акции</label>
+    <select id="promo-color-select" class="form-control">
+      <option value="blue">Синий</option>
+      <option value="green">Зеленый</option>
+      <option value="yellow">Желтый</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>
+      <input type="checkbox" id="promo-active"> Активная акция
+    </label>
+  </div>
+  <button class="btn" onclick="addPromotion()"><i class="fas fa-save"></i> Сохранить</button>
+  <button class="btn" onclick="hideAddPromotionForm()" style="background: #ccc; margin-left: 10px;">Отмена</button>
 </div>
-            <div class="form-group">
-              <label>
-                <input type="checkbox" id="promo-active"> Активная акция
-              </label>
-            </div>
-            <button class="btn" onclick="addPromotion()"><i class="fas fa-save"></i> Сохранить</button>
-            <button class="btn" onclick="hideAddPromotionForm()" style="background: #ccc; margin-left: 10px;">Отмена</button>
-          </div>
           
           <!-- Список акций -->
           <div id="promotions-list" class="list-items">
@@ -501,20 +501,19 @@
       document.getElementById('add-promotion-form').classList.remove('hidden');
     };
 
-    window.hideAddPromotionForm = function() {
-      document.getElementById('add-promotion-form').classList.add('hidden');
-      document.getElementById('promo-title').value = '';
-      document.getElementById('promo-desc').value = '';
-      document.getElementById('promo-image').value = '';
-      document.getElementById('promo-active').checked = false;
+   window.hideAddPromotionForm = function() {
+  document.getElementById('add-promotion-form').classList.add('hidden');
+  document.getElementById('promo-title').value = '';
+  document.getElementById('promo-desc').value = '';
+  document.getElementById('promo-active').checked = false;
     };
 
     // Выбор цвета акции
-  window.addPromotion = async function() {
+ window.addPromotion = async function() {
   const title = document.getElementById('promo-title').value;
   const description = document.getElementById('promo-desc').value;
   const isActive = document.getElementById('promo-active').checked;
-  const color = document.getElementById('promo-color-select').value; // Получаем выбранный цвет
+  const color = document.getElementById('promo-color-select').value;
   
   if (!title || !description) {
     alert('Пожалуйста, заполните все обязательные поля');
@@ -526,7 +525,7 @@
       title: title,
       description: description,
       isActive: isActive,
-      color: color, // Сохраняем выбранный цвет
+      color: color,
       createdAt: serverTimestamp()
     });
     
@@ -534,6 +533,7 @@
     hideAddPromotionForm();
     loadPromotions();
   } catch (error) {
+    console.error('Ошибка добавления акции:', error);
     alert('Ошибка при добавлении акции: ' + error.message);
   }
 };
