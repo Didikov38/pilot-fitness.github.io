@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Общее количество слайдов
   const totalSlides = slides.length;
   // Таймер для автоматического переключения
-  let slideInterval;
+  let sliderInterval;
 
   /**
    * 2. ФУНКЦИЯ ДЛЯ ПОКАЗА КОНКРЕТНОГО СЛАЙДА
@@ -41,9 +41,11 @@ document.addEventListener('DOMContentLoaded', function() {
     slides[currentSlide].classList.add('active');
 
     // Обновляем активную точку
-    document.querySelectorAll('.slider-dot').forEach((dot, index) => {
-      dot.classList.toggle('active', index === currentSlide);
-    });
+    if (document.querySelector('.slider-dots')) {
+      document.querySelectorAll('.slider-dot').forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
+      });
+    }
   }
 
   /**
@@ -58,9 +60,9 @@ document.addEventListener('DOMContentLoaded', function() {
    */
   function startSlideShow() {
     // Очищаем предыдущий интервал (если был)
-    clearInterval(slideInterval);
+    clearInterval(sliderInterval);
     // Устанавливаем новый интервал (5 секунд)
-    slideInterval = setInterval(nextSlide, 5000);
+    sliderInterval = setInterval(nextSlide, 5000);
   }
 
   /**
@@ -71,10 +73,8 @@ document.addEventListener('DOMContentLoaded', function() {
     showSlide(currentSlide);
     
     // Создаем контейнер для точек
-    const dotsContainer = document.createElement('div');
-    dotsContainer.className = 'slider-dots';
-    document.querySelector('.slider').appendChild(dotsContainer);
-
+    const dotsContainer = document.querySelector('.slider-dots');
+    
     // Добавляем точки для каждого слайда
     slides.forEach((_, index) => {
       const dot = document.createElement('div');
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (index === currentSlide) dot.classList.add('active');
       
       dot.addEventListener('click', () => {
-        clearInterval(slideInterval);
+        clearInterval(sliderInterval);
         showSlide(index);
         startSlideShow();
       });
@@ -92,13 +92,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Обработчики событий для кнопок
     nextBtn.addEventListener('click', function() {
-      clearInterval(slideInterval);
+      clearInterval(sliderInterval);
       nextSlide();
       startSlideShow();
     });
     
     prevBtn.addEventListener('click', function() {
-      clearInterval(slideInterval);
+      clearInterval(sliderInterval);
       showSlide(currentSlide - 1);
       startSlideShow();
     });
@@ -107,25 +107,24 @@ document.addEventListener('DOMContentLoaded', function() {
     startSlideShow();
     
     // Пауза при наведении
-   const slider = document.querySelector('.slider');
-// При поведении мыши останавливаем авто-переключение
-slider.addEventListener("mouseenter", function() {
-    clearInterval(sliderInterval);
-});
+    const slider = document.querySelector('.slider');
+    slider.addEventListener('mouseenter', function() {
+      clearInterval(sliderInterval);
+    });
+    
+    slider.addEventListener('mouseleave', startSlideShow);
+  }
 
-// При уходе мыши возобновляем авто-переключение
-slider.addEventListener("mouseleave", startSlideShow);
-
-// Запускаем слайдер (если он есть на странице)
-if (slides.length > 0) {
+  // Запускаем слайдер (если он есть на странице)
+  if (slides.length > 0) {
     initSlider();
-}
+  }
 
   /**
-   * 6. ДОПОЛНИТЕЛЬНЫЕ СКРИПТЫ САЙТА
+   * 8. ДОПОЛНИТЕЛЬНЫЕ СКРИПТЫ САЙТА
    */
   
-  // Плавный переход для кнопок
+  // Плавный переход для кнопки "Купить абонемент"
   document.querySelectorAll('.buy-btn').forEach(btn => {
     btn.addEventListener('click', function(e) {
       e.preventDefault();
@@ -136,7 +135,9 @@ if (slides.length > 0) {
     });
   });
 
-  // Плавный скролл для якорных ссылок
+  /**
+   * 9. ПЛАВНЫЙ СКРОЛЛ ДЛЯ ЯКОРНЫХ ССЫЛОК
+   */
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       e.preventDefault();
