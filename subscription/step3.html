@@ -102,12 +102,9 @@
             background: #E55700;
         }
     </style>
-<!-- Подключение Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
 <script>
-  // Конфигурация Firebase (должна совпадать с админкой)
   const firebaseConfig = {
     apiKey: "AIzaSyAJojCBMMgblk6_SwidxIe-VT2Ffo-SAbk",
     authDomain: "pilot-fitness.firebaseapp.com",
@@ -116,8 +113,6 @@
     messagingSenderId: "638178270952",
     appId: "1:638178270952:web:1cec6cdb7f0b751a2e735d"
   };
-
-  // Инициализация Firebase
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 </script>
@@ -223,75 +218,51 @@
         }
         
         // 2. Обработка формы оплаты
-        const paymentForm = document.getElementById('payment-form');
-        if (paymentForm) {
-            paymentForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                // Проверяем заполнение всех полей
-                const cardNumber = document.getElementById('card-number').value.trim();
-                const cardExpiry = document.getElementById('card-expiry').value.trim();
-                const cardCvc = document.getElementById('card-cvc').value.trim();
-                
-                if (!cardNumber || !cardExpiry || !cardCvc) {
-                    alert('Пожалуйста, заполните все поля!');
-                    return;
-                }
-                
-                try {
-                    // Собираем все данные
-                    const clientData = JSON.parse(localStorage.getItem('clientData')) || {};
-                    const selectedPlan = JSON.parse(localStorage.getItem('selectedPlan')) || {};
-                    
-                    // Форматируем данные для сохранения
-                    const subscriptionData = {
-                        client: {
-                            firstName: clientData.firstName,
-                            lastName: clientData.lastName,
-                            phone: clientData.phone,
-                            email: clientData.email,
-                            birthdate: clientData.birthdate,
-                            gender: clientData.gender
-                        },
-                        subscription: {
-                            name: selectedPlan.name,
-                            type: selectedPlan.type,
-                            price: selectedPlan.price
-                        },
-                        payment: {
-                            cardLastFour: cardNumber.slice(-4), // Сохраняем только последние 4 цифры
-                            expiryDate: cardExpiry
-                            // CVC не сохраняем из соображений безопасности
-                        },
-                        status: 'completed',
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    };
-                    
-                    // Сохраняем в коллекцию subscriptions
-                    await db.collection('subscriptions').add(subscriptionData);
-                    
-                    // Также сохраняем в messages для админки
-                    await db.collection('messages').add({
-                        type: 'subscription_purchase',
-                        name: `${clientData.firstName} ${clientData.lastName}`,
-                        phone: clientData.phone,
-                        email: clientData.email,
-                        subscription: selectedPlan.name,
-                        price: selectedPlan.price,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    
-                    alert('Оплата прошла успешно! Спасибо за покупку.');
-                    localStorage.removeItem('clientData');
-                    localStorage.removeItem('selectedPlan');
-                    window.location.href = '../index.html';
-                } catch (error) {
-                    console.error('Ошибка:', error);
-                    alert('Произошла ошибка при обработке платежа. Пожалуйста, попробуйте позже.');
-                }
-            });
+        paymentForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    try {
+        const cardNumber = document.getElementById('card-number').value.trim();
+        const cardExpiry = document.getElementById('card-expiry').value.trim();
+        const cardCvc = document.getElementById('card-cvc').value.trim();
+        
+        if (!cardNumber || !cardExpiry || !cardCvc) {
+            alert('Пожалуйста, заполните все поля!');
+            return;
         }
-    });
+        
+        const clientData = JSON.parse(localStorage.getItem('clientData'));
+        const selectedPlan = JSON.parse(localStorage.getItem('selectedPlan'));
+        
+        // Добавляем в subscriptions
+        await db.collection("subscriptions").add({
+            client: clientData,
+            plan: selectedPlan,
+            payment: {
+                last4: cardNumber.slice(-4),
+                expiry: cardExpiry
+            },
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            status: "completed"
+        });
+        
+        // Добавляем в messages для админки
+        await db.collection("messages").add({
+            type: "subscription",
+            name: `${clientData.firstName} ${clientData.lastName}`,
+            phone: clientData.phone,
+            plan: selectedPlan.name,
+            price: selectedPlan.price,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        alert('Оплата прошла успешно!');
+        window.location.href = '../index.html';
+    } catch (error) {
+        console.error("Ошибка:", error);
+        alert('Ошибка при оплате: ' + error.message);
+    }
+});
 </script>
 </body>
 </html>
