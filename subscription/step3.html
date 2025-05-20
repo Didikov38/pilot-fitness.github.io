@@ -102,6 +102,25 @@
             background: #E55700;
         }
     </style>
+<!-- Подключение Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script>
+  // Конфигурация Firebase (должна совпадать с админкой)
+  const firebaseConfig = {
+    apiKey: "AIzaSyAJojCBMMgblk6_SwidxIe-VT2Ffo-SAbk",
+    authDomain: "pilot-fitness.firebaseapp.com",
+    projectId: "pilot-fitness",
+    storageBucket: "pilot-fitness.appspot.com",
+    messagingSenderId: "638178270952",
+    appId: "1:638178270952:web:1cec6cdb7f0b751a2e735d"
+  };
+
+  // Инициализация Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
 </head>
 <body class="subscription-flow">
     <!-- Основное содержимое страницы -->
