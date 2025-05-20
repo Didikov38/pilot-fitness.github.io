@@ -72,31 +72,50 @@ document.addEventListener('DOMContentLoaded', function() {
     // Показываем первый слайд
     showSlide(currentSlide);
     
-    // =========================================
-    // ОБНОВЛЕНИЕ: Создаем точки-индикаторы (МОЙ ДОБАВЛЕННЫЙ КОД)
-    // =========================================
+    // Создаем контейнер для точек
     const dotsContainer = document.createElement('div');
     dotsContainer.className = 'slider-dots';
     document.querySelector('.slider').appendChild(dotsContainer);
 
     // Добавляем точки для каждого слайда
     slides.forEach((_, index) => {
-      const dot = document.createElement('div');
-      dot.className = 'slider-dot';
-      if (index === currentSlide) dot.classList.add('active');
-      
-      // Переключение по клику на точку
-      dot.addEventListener('click', () => {
+        const dot = document.createElement('div');
+        dot.className = 'slider-dot';
+        if (index === currentSlide) dot.classList.add('active');
+        
+        dot.addEventListener('click', () => {
+            clearInterval(slideInterval);
+            showSlide(index);
+            startSlideShow();
+        });
+        
+        dotsContainer.appendChild(dot);
+    });
+
+    // Обработчики событий для кнопок
+    nextBtn.addEventListener('click', function() {
         clearInterval(slideInterval);
-        showSlide(index);
+        nextSlide();
         startSlideShow();
-      });
-      
-      dotsContainer.appendChild(dot);
+    });
+    
+    prevBtn.addEventListener('click', function() {
+        clearInterval(slideInterval);
+        showSlide(currentSlide - 1);
+        startSlideShow();
     });
 
     // Запускаем автоматическое переключение
     startSlideShow();
+    
+    // Пауза при наведении
+    const slider = document.querySelector('.slider');
+    slider.addEventListener('mouseenter', function() {
+        clearInterval(slideInterval);
+    });
+    
+    slider.addEventListener('mouseleave', startSlideShow);
+}
     
     /**
      * 6. ОБРАБОТЧИКИ СОБЫТИЙ ДЛЯ КНОПОК УПРАВЛЕНИЯ
