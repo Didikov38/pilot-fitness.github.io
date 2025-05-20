@@ -40,9 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Показываем текущий слайд
     slides[currentSlide].classList.add('active');
 
-    // =========================================
-    // ОБНОВЛЕНИЕ: Обновляем активную точку (МОЙ ДОБАВЛЕННЫЙ КОД)
-    // =========================================
+    // Обновляем активную точку
     document.querySelectorAll('.slider-dot').forEach((dot, index) => {
       dot.classList.toggle('active', index === currentSlide);
     });
@@ -79,30 +77,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Добавляем точки для каждого слайда
     slides.forEach((_, index) => {
-        const dot = document.createElement('div');
-        dot.className = 'slider-dot';
-        if (index === currentSlide) dot.classList.add('active');
-        
-        dot.addEventListener('click', () => {
-            clearInterval(slideInterval);
-            showSlide(index);
-            startSlideShow();
-        });
-        
-        dotsContainer.appendChild(dot);
+      const dot = document.createElement('div');
+      dot.className = 'slider-dot';
+      if (index === currentSlide) dot.classList.add('active');
+      
+      dot.addEventListener('click', () => {
+        clearInterval(slideInterval);
+        showSlide(index);
+        startSlideShow();
+      });
+      
+      dotsContainer.appendChild(dot);
     });
 
     // Обработчики событий для кнопок
     nextBtn.addEventListener('click', function() {
-        clearInterval(slideInterval);
-        nextSlide();
-        startSlideShow();
+      clearInterval(slideInterval);
+      nextSlide();
+      startSlideShow();
     });
     
     prevBtn.addEventListener('click', function() {
-        clearInterval(slideInterval);
-        showSlide(currentSlide - 1);
-        startSlideShow();
+      clearInterval(slideInterval);
+      showSlide(currentSlide - 1);
+      startSlideShow();
     });
 
     // Запускаем автоматическое переключение
@@ -111,44 +109,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Пауза при наведении
     const slider = document.querySelector('.slider');
     slider.addEventListener('mouseenter', function() {
-        clearInterval(slideInterval);
-    });
-    
-    slider.addEventListener('mouseleave', startSlideShow);
-}
-    
-    /**
-     * 6. ОБРАБОТЧИКИ СОБЫТИЙ ДЛЯ КНОПОК УПРАВЛЕНИЯ
-     */
-    
-    // Кнопка "следующий слайд"
-    nextBtn.addEventListener('click', function() {
-      // Останавливаем авто-переключение
-      clearInterval(slideInterval);
-      // Переключаем слайд
-      nextSlide();
-      // Перезапускаем таймер
-      startSlideShow();
-    });
-    
-    // Кнопка "предыдущий слайд"
-    prevBtn.addEventListener('click', function() {
-      clearInterval(slideInterval);
-      showSlide(currentSlide - 1);
-      startSlideShow();
-    });
-    
-    /**
-     * 7. ПАУЗА ПРИ НАВЕДЕНИИ МЫШИ НА СЛАЙДЕР
-     */
-    const slider = document.querySelector('.slider');
-    
-    // При наведении мыши останавливаем авто-переключение
-    slider.addEventListener('mouseenter', function() {
       clearInterval(slideInterval);
     });
     
-    // При уходе мыши возобновляем авто-переключение
     slider.addEventListener('mouseleave', startSlideShow);
   }
 
@@ -158,23 +121,21 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   /**
-   * 8. ДОПОЛНИТЕЛЬНЫЕ СКРИПТЫ САЙТА
+   * 6. ДОПОЛНИТЕЛЬНЫЕ СКРИПТЫ САЙТА
    */
   
- // Добавьте вместо этого (опционально, для плавного перехода):
-document.querySelectorAll('.buy-btn').forEach(btn => {
-  btn.addEventListener('click', function(e) {
-    e.preventDefault();
-    document.body.style.opacity = '0.7'; // Эффект затухания
-    setTimeout(() => {
-      window.location.href = this.href;
-    }, 300);
+  // Плавный переход для кнопок
+  document.querySelectorAll('.buy-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.body.style.opacity = '0.7';
+      setTimeout(() => {
+        window.location.href = this.href;
+      }, 300);
+    });
   });
-});
 
-  /**
-   * 9. ПЛАВНЫЙ СКРОЛЛ ДЛЯ ЯКОРНЫХ ССЫЛОК
-   */
+  // Плавный скролл для якорных ссылок
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       e.preventDefault();
@@ -189,6 +150,4 @@ document.querySelectorAll('.buy-btn').forEach(btn => {
       }
     });
   });
-
-
 });
