@@ -40,7 +40,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Показываем текущий слайд
     slides[currentSlide].classList.add('active');
 
-    // Обновляем активную точку
+    // =========================================
+    // ОБНОВЛЕНИЕ: Обновляем активную точку (МОЙ ДОБАВЛЕННЫЙ КОД)
+    // =========================================
     document.querySelectorAll('.slider-dot').forEach((dot, index) => {
       dot.classList.toggle('active', index === currentSlide);
     });
@@ -70,7 +72,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Показываем первый слайд
     showSlide(currentSlide);
     
-    // Создаем контейнер для точек
+    // =========================================
+    // ОБНОВЛЕНИЕ: Создаем точки-индикаторы (МОЙ ДОБАВЛЕННЫЙ КОД)
+    // =========================================
     const dotsContainer = document.createElement('div');
     dotsContainer.className = 'slider-dots';
     document.querySelector('.slider').appendChild(dotsContainer);
@@ -81,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
       dot.className = 'slider-dot';
       if (index === currentSlide) dot.classList.add('active');
       
+      // Переключение по клику на точку
       dot.addEventListener('click', () => {
         clearInterval(slideInterval);
         showSlide(index);
@@ -90,28 +95,41 @@ document.addEventListener('DOMContentLoaded', function() {
       dotsContainer.appendChild(dot);
     });
 
-    // Обработчики событий для кнопок
+    // Запускаем автоматическое переключение
+    startSlideShow();
+    
+    /**
+     * 6. ОБРАБОТЧИКИ СОБЫТИЙ ДЛЯ КНОПОК УПРАВЛЕНИЯ
+     */
+    
+    // Кнопка "следующий слайд"
     nextBtn.addEventListener('click', function() {
+      // Останавливаем авто-переключение
       clearInterval(slideInterval);
+      // Переключаем слайд
       nextSlide();
+      // Перезапускаем таймер
       startSlideShow();
     });
     
+    // Кнопка "предыдущий слайд"
     prevBtn.addEventListener('click', function() {
       clearInterval(slideInterval);
       showSlide(currentSlide - 1);
       startSlideShow();
     });
-
-    // Запускаем автоматическое переключение
-    startSlideShow();
     
-    // Пауза при наведении
+    /**
+     * 7. ПАУЗА ПРИ НАВЕДЕНИИ МЫШИ НА СЛАЙДЕР
+     */
     const slider = document.querySelector('.slider');
+    
+    // При наведении мыши останавливаем авто-переключение
     slider.addEventListener('mouseenter', function() {
       clearInterval(slideInterval);
     });
     
+    // При уходе мыши возобновляем авто-переключение
     slider.addEventListener('mouseleave', startSlideShow);
   }
 
@@ -121,21 +139,23 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   /**
-   * 6. ДОПОЛНИТЕЛЬНЫЕ СКРИПТЫ САЙТА
+   * 8. ДОПОЛНИТЕЛЬНЫЕ СКРИПТЫ САЙТА
    */
   
-  // Плавный переход для кнопок
-  document.querySelectorAll('.buy-btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      document.body.style.opacity = '0.7';
-      setTimeout(() => {
-        window.location.href = this.href;
-      }, 300);
-    });
+ // Добавьте вместо этого (опционально, для плавного перехода):
+document.querySelectorAll('.buy-btn').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    document.body.style.opacity = '0.7'; // Эффект затухания
+    setTimeout(() => {
+      window.location.href = this.href;
+    }, 300);
   });
+});
 
-  // Плавный скролл для якорных ссылок
+  /**
+   * 9. ПЛАВНЫЙ СКРОЛЛ ДЛЯ ЯКОРНЫХ ССЫЛОК
+   */
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       e.preventDefault();
@@ -150,4 +170,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+
+
 });
