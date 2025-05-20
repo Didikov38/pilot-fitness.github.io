@@ -40,9 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Показываем текущий слайд
     slides[currentSlide].classList.add('active');
 
-    // =========================================
-    // ОБНОВЛЕНИЕ: Обновляем активную точку (МОЙ ДОБАВЛЕННЫЙ КОД)
-    // =========================================
+    // Обновляем активную точку
     document.querySelectorAll('.slider-dot').forEach((dot, index) => {
       dot.classList.toggle('active', index === currentSlide);
     });
@@ -72,9 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Показываем первый слайд
     showSlide(currentSlide);
     
-    // =========================================
-    // ОБНОВЛЕНИЕ: Создаем точки-индикаторы (МОЙ ДОБАВЛЕННЫЙ КОД)
-    // =========================================
+    // Создаем контейнер для точек
     const dotsContainer = document.createElement('div');
     dotsContainer.className = 'slider-dots';
     document.querySelector('.slider').appendChild(dotsContainer);
@@ -85,7 +81,6 @@ document.addEventListener('DOMContentLoaded', function() {
       dot.className = 'slider-dot';
       if (index === currentSlide) dot.classList.add('active');
       
-      // Переключение по клику на точку
       dot.addEventListener('click', () => {
         clearInterval(slideInterval);
         showSlide(index);
@@ -95,67 +90,53 @@ document.addEventListener('DOMContentLoaded', function() {
       dotsContainer.appendChild(dot);
     });
 
-    // Запускаем автоматическое переключение
-    startSlideShow();
-    
-    /**
-     * 6. ОБРАБОТЧИКИ СОБЫТИЙ ДЛЯ КНОПОК УПРАВЛЕНИЯ
-     */
-    
-    // Кнопка "следующий слайд"
+    // Обработчики событий для кнопок
     nextBtn.addEventListener('click', function() {
-      // Останавливаем авто-переключение
       clearInterval(slideInterval);
-      // Переключаем слайд
       nextSlide();
-      // Перезапускаем таймер
       startSlideShow();
     });
     
-    // Кнопка "предыдущий слайд"
     prevBtn.addEventListener('click', function() {
       clearInterval(slideInterval);
       showSlide(currentSlide - 1);
       startSlideShow();
     });
-    
-    /**
-     * 7. ПАУЗА ПРИ НАВЕДЕНИИ МЫШИ НА СЛАЙДЕР
-     */
-    const slider = document.querySelector('.slider');
-    
-    // При наведении мыши останавливаем авто-переключение
-    slider.addEventListener('mouseenter', function() {
-      clearInterval(slideInterval);
-    });
-    
-    // При уходе мыши возобновляем авто-переключение
-    slider.addEventListener('mouseleave', startSlideShow);
-  }
 
-  // Запускаем слайдер (если он есть на странице)
-  if (slides.length > 0) {
-    initSlider();
-  }
-
-  /**
-   * 8. ДОПОЛНИТЕЛЬНЫЕ СКРИПТЫ САЙТА
-   */
-  
- // Добавьте вместо этого (опционально, для плавного перехода):
-document.querySelectorAll('.buy-btn').forEach(btn => {
-  btn.addEventListener('click', function(e) {
-    e.preventDefault();
-    document.body.style.opacity = '0.7'; // Эффект затухания
-    setTimeout(() => {
-      window.location.href = this.href;
-    }, 300);
-  });
+    // Запускаем автоматическое переключение
+    startSlideShow();
+    
+    // Пауза при наведении
+   const slider = document.querySelector('.slider');
+// При поведении мыши останавливаем авто-переключение
+slider.addEventListener("mouseenter", function() {
+    clearInterval(sliderInterval);
 });
 
+// При уходе мыши возобновляем авто-переключение
+slider.addEventListener("mouseleave", startSlideShow);
+
+// Запускаем слайдер (если он есть на странице)
+if (slides.length > 0) {
+    initSlider();
+}
+
   /**
-   * 9. ПЛАВНЫЙ СКРОЛЛ ДЛЯ ЯКОРНЫХ ССЫЛОК
+   * 6. ДОПОЛНИТЕЛЬНЫЕ СКРИПТЫ САЙТА
    */
+  
+  // Плавный переход для кнопок
+  document.querySelectorAll('.buy-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.body.style.opacity = '0.7';
+      setTimeout(() => {
+        window.location.href = this.href;
+      }, 300);
+    });
+  });
+
+  // Плавный скролл для якорных ссылок
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       e.preventDefault();
@@ -170,6 +151,4 @@ document.querySelectorAll('.buy-btn').forEach(btn => {
       }
     });
   });
-
-
 });
