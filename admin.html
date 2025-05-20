@@ -297,7 +297,6 @@
           <li><a href="#" data-section="promotions"><i class="fas fa-percentage"></i> Управление акциями</a></li>
           <li><a href="#" data-section="trainers"><i class="fas fa-users"></i> Управление тренерами</a></li>
           <li><a href="#" data-section="messages"><i class="fas fa-envelope"></i> Сообщения</a></li>
-          <li><a href="#" data-section="settings"><i class="fas fa-cog"></i> Настройки</a></li>
         </ul>
       </div>
       
@@ -403,24 +402,6 @@
             <!-- Сообщения будут загружаться здесь -->
           </div>
         </div>
-        
-        <!-- Настройки -->
-        <div id="settings-section" class="hidden">
-          <h2 class="section-title"><i class="fas fa-cog"></i> Настройки сайта</h2>
-          <div class="form-group">
-            <label for="site-title">Название сайта</label>
-            <input type="text" id="site-title" class="form-control">
-          </div>
-          <div class="form-group">
-            <label for="site-description">Описание сайта</label>
-            <textarea id="site-description" class="form-control"></textarea>
-          </div>
-          <button class="btn" onclick="saveSettings()"><i class="fas fa-save"></i> Сохранить настройки</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
@@ -720,43 +701,55 @@
     };
 
     // ========== Управление сообщениями ==========
-    async function loadMessages() {
-      const messagesList = document.getElementById('messages-list');
-      messagesList.innerHTML = '<p>Загрузка...</p>';
-      
-      try {
+async function loadMessages() {
+    const messagesList = document.getElementById('messages-list');
+    messagesList.innerHTML = '<p>Загрузка...</p>';
+    
+    try {
         const q = query(collection(db, 'messages'), orderBy('createdAt', 'desc'));
         const snapshot = await getDocs(q);
         
         if (snapshot.empty) {
-          messagesList.innerHTML = '<p>Сообщений нет</p>';
-          return;
+            messagesList.innerHTML = '<p>Сообщений нет</p>';
+            return;
         }
         
         messagesList.innerHTML = '';
         
         snapshot.forEach(doc => {
-          const message = doc.data();
-          const messageId = doc.id;
-          
-          const messageCard = document.createElement('div');
-          messageCard.className = 'item-card';
-          messageCard.innerHTML = `
-            <div class="item-actions">
-              <button class="action-btn delete" onclick="deleteMessage('${messageId}')"><i class="fas fa-trash"></i></button>
-            </div>
-            <p><strong>Имя:</strong> ${message.name}</p>
-            <p><strong>Телефон:</strong> ${message.phone}</p>
-            <p><strong>Дата:</strong> ${new Date(message.createdAt?.toDate()).toLocaleString()}</p>
-          `;
-          
-          messagesList.appendChild(messageCard);
+            const message = doc.data();
+            const messageId = doc.id;
+            const date = message.createdAt?.toDate() || new Date();
+            
+            const messageCard = document.createElement('div');
+            messageCard.className = 'item-card';
+            
+            let messageContent = `
+                <div class="item-actions">
+                    <button class="action-btn delete" onclick="deleteMessage('${messageId}')"><i class="fas fa-trash"></i></button>
+                </div>
+                <p><strong>Тип:</strong> ${message.type === 'discount_request' ? 'Запрос скидки' : 'Покупка абонемента'}</p>
+                <p><strong>Имя:</strong> ${message.name || 'Не указано'}</p>
+                <p><strong>Телефон:</strong> ${message.phone || 'Не указан'}</p>
+                <p><strong>Дата:</strong> ${date.toLocaleString()}</p>
+            `;
+            
+            if (message.type === 'subscription_purchase') {
+                messageContent += `
+                    <p><strong>Абонемент:</strong> ${message.name} (${message.price})</p>
+                    <p><strong>Email:</strong> ${message.email || 'Не указан'}</p>
+                    <p><strong>Дата рождения:</strong> ${message.birthdate || 'Не указана'}</p>
+                `;
+            }
+            
+            messageCard.innerHTML = messageContent;
+            messagesList.appendChild(messageCard);
         });
-      } catch (error) {
+    } catch (error) {
         messagesList.innerHTML = '<p>Ошибка при загрузке сообщений</p>';
         console.error('Ошибка загрузки сообщений:', error);
-      }
     }
+}
 
     window.deleteMessage = async function(messageId) {
       if (confirm('Вы уверены, что хотите удалить это сообщение?')) {
