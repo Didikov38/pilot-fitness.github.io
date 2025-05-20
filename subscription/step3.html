@@ -218,51 +218,57 @@
         }
         
         // 2. Обработка формы оплаты
-        paymentForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    try {
-        const cardNumber = document.getElementById('card-number').value.trim();
-        const cardExpiry = document.getElementById('card-expiry').value.trim();
-        const cardCvc = document.getElementById('card-cvc').value.trim();
-        
-        if (!cardNumber || !cardExpiry || !cardCvc) {
-            alert('Пожалуйста, заполните все поля!');
-            return;
+        const paymentForm = document.getElementById('payment-form');
+        if (paymentForm) {
+            paymentForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                try {
+                    const cardNumber = document.getElementById('card-number').value.trim();
+                    const cardExpiry = document.getElementById('card-expiry').value.trim();
+                    const cardCvc = document.getElementById('card-cvc').value.trim();
+                    
+                    if (!cardNumber || !cardExpiry || !cardCvc) {
+                        alert('Пожалуйста, заполните все поля!');
+                        return;
+                    }
+                    
+                    const clientData = JSON.parse(localStorage.getItem('clientData'));
+                    const selectedPlan = JSON.parse(localStorage.getItem('selectedPlan'));
+                    
+                    // Добавляем в subscriptions
+                    await db.collection("subscriptions").add({
+                        client: clientData,
+                        plan: selectedPlan,
+                        payment: {
+                            last4: cardNumber.slice(-4),
+                            expiry: cardExpiry
+                        },
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        status: "completed"
+                    });
+                    
+                    // Добавляем в messages для админки
+                    await db.collection("messages").add({
+                        type: "subscription",
+                        name: `${clientData.firstName} ${clientData.lastName}`,
+                        phone: clientData.phone,
+                        plan: selectedPlan.name,
+                        price: selectedPlan.price,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    alert('Оплата прошла успешно!');
+                    localStorage.removeItem('clientData');
+                    localStorage.removeItem('selectedPlan');
+                    window.location.href = '../index.html';
+                } catch (error) {
+                    console.error("Ошибка:", error);
+                    alert('Ошибка при оплате: ' + error.message);
+                }
+            });
         }
-        
-        const clientData = JSON.parse(localStorage.getItem('clientData'));
-        const selectedPlan = JSON.parse(localStorage.getItem('selectedPlan'));
-        
-        // Добавляем в subscriptions
-        await db.collection("subscriptions").add({
-            client: clientData,
-            plan: selectedPlan,
-            payment: {
-                last4: cardNumber.slice(-4),
-                expiry: cardExpiry
-            },
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            status: "completed"
-        });
-        
-        // Добавляем в messages для админки
-        await db.collection("messages").add({
-            type: "subscription",
-            name: `${clientData.firstName} ${clientData.lastName}`,
-            phone: clientData.phone,
-            plan: selectedPlan.name,
-            price: selectedPlan.price,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        
-        alert('Оплата прошла успешно!');
-        window.location.href = '../index.html';
-    } catch (error) {
-        console.error("Ошибка:", error);
-        alert('Ошибка при оплате: ' + error.message);
-    }
-});
+    });
 </script>
 </body>
 </html>
