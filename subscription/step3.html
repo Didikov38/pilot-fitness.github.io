@@ -240,14 +240,20 @@
                         ...paymentData
                     };
                     
-                    // 5. Здесь будет отправка данных на сервер
-                    console.log('Данные для отправки:', completeData);
-                    
-                    // 6. Сохраняем данные в localStorage (временно)
-                    localStorage.setItem('paymentData', JSON.stringify(completeData));
-                    
-                    // 7. Показываем сообщение об успехе
-                    alert('Оплата прошла успешно! Спасибо за покупку.');
+                // 5. Отправка данных на сервер
+db.collection('messages').add({
+    ...completeData,
+    type: 'subscription_purchase',
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+})
+.then(() => {
+    alert('Оплата прошла успешно! Спасибо за покупку.');
+    window.location.href = '../index.html';
+})
+.catch(error => {
+    console.error('Ошибка сохранения данных:', error);
+    alert('Платеж прошел, но возникла ошибка при сохранении данных. Пожалуйста, свяжитесь с нами.');
+});
                     
                     // 8. Перенаправляем на главную страницу
                     window.location.href = '../index.html';
