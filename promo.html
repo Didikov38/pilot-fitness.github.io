@@ -151,18 +151,43 @@
     <div class="container">
         <div class="discount-form-container">
             <h2 class="discount-form-title">Получить скидку</h2>
-            <form class="discount-form" action="#" method="POST">
+            <form class="discount-form" id="discount-form">
                 <div class="form-group">
-                    <input type="text" id="name" name="name" placeholder="Введите имя" required>
+                    <input type="text" id="discount-name" name="name" placeholder="Введите имя" required>
                 </div>
                 <div class="form-group">
-                    <input type="tel" id="phone" name="phone" placeholder="Введите номер телефона" required>
+                    <input type="tel" id="discount-phone" name="phone" placeholder="Введите номер телефона" required>
                 </div>
                 <button type="submit" class="submit-btn">Получить скидку</button>
             </form>
         </div>
     </div>
-    </section>
+</section>
+
+<script>
+document.getElementById('discount-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const name = document.getElementById('discount-name').value;
+    const phone = document.getElementById('discount-phone').value;
+    
+    // Добавляем сообщение в Firestore
+    db.collection('messages').add({
+        name: name,
+        phone: phone,
+        type: 'discount_request',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    .then(() => {
+        alert('Ваша заявка принята! Мы скоро с вами свяжемся.');
+        document.getElementById('discount-form').reset();
+    })
+    .catch(error => {
+        console.error('Ошибка отправки:', error);
+        alert('Произошла ошибка. Пожалуйста, попробуйте позже.');
+    });
+});
+</script>
    
     <!-- Подвал сайта -->
     <footer class="footer">
